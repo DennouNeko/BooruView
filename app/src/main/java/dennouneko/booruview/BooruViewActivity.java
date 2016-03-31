@@ -97,6 +97,10 @@ public class BooruViewActivity extends Activity
 		
 		flipper.setOnTouchListener(new SwipeListener(BooruViewActivity.this) {
 			public void onSwipeRight() {
+				if(panelNum <= 0) {
+					// TODO: check for new posts
+					// and update panelNum if necessary
+				}
 				if(panelNum > 0) {
 					panelNum--;
 					Animation in = inFromLeftAnimation();
@@ -106,10 +110,19 @@ public class BooruViewActivity extends Activity
 					flipper.setOutAnimation(out);
 					flipper.showPrevious();
 				}
+				else {
+					Toast.makeText(getApplicationContext(), "No new images.", Toast.LENGTH_SHORT).show();
+				}
 				super.onSwipeRight();
 			}
 			
 			public void onSwipeLeft() {
+				/* if(panelNum >= bufferedImageCount - 1) {
+					// TODO: fetch new chunk of images,
+					// try to sync if data shifted?
+					// update panelNum if necessary
+				}//*/
+				// if(panelNum < bufferedImageCount - 1) {
 				panelNum++;
 				Animation in = inFromRightAnimation();
 				Animation out = outToLeftAnimation();
@@ -118,6 +131,7 @@ public class BooruViewActivity extends Activity
 				flipper.setOutAnimation(out);
 				flipper.showNext();
 				super.onSwipeLeft();
+				//}
 			}
 			
 			public void onSwipeCancel() {
