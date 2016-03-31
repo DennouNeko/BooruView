@@ -97,13 +97,15 @@ public class BooruViewActivity extends Activity
 		
 		flipper.setOnTouchListener(new SwipeListener(BooruViewActivity.this) {
 			public void onSwipeRight() {
-				panelNum--;
-				Animation in = inFromLeftAnimation();
-				Animation out = outToRightAnimation();
-				in.setAnimationListener(onAnimationEnd());
-				flipper.setInAnimation(in);
-				flipper.setOutAnimation(out);
-				flipper.showPrevious();
+				if(panelNum > 0) {
+					panelNum--;
+					Animation in = inFromLeftAnimation();
+					Animation out = outToRightAnimation();
+					in.setAnimationListener(onAnimationEnd());
+					flipper.setInAnimation(in);
+					flipper.setOutAnimation(out);
+					flipper.showPrevious();
+				}
 				super.onSwipeRight();
 			}
 			
