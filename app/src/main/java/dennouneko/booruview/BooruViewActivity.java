@@ -94,8 +94,6 @@ public class BooruViewActivity extends Activity
         setContentView(R.layout.main);
 		
 		flipper = (ViewFlipper)findViewById(R.id.flipper);
-		//Button button1 = (Button)findViewById(R.id.view1Button1);
-		//Button button2 = (Button)findViewById(R.id.view2Button1);
 		
 		flipper.setOnTouchListener(new SwipeListener(BooruViewActivity.this) {
 			public void onSwipeRight() {
@@ -136,22 +134,6 @@ public class BooruViewActivity extends Activity
 				super.onFingerMove(x1, y1, x2, y2);
 			}
 		});
-		
-		/*button1.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				flipper.setInAnimation(inFromRightAnimation());
-				flipper.setOutAnimation(outToLeftAnimation());
-				flipper.showNext();
-			}
-		});//*/
-		
-		/*button2.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				flipper.setInAnimation(inFromLeftAnimation());
-				flipper.setOutAnimation(outToRightAnimation());
-				flipper.showPrevious();
-			}
-		});//*/
 		
 		updateViewContent();
     }
