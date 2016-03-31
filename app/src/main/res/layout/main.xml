@@ -1,0 +1,34 @@
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:id="@+id/flipper"
+    android:gravity="center">
+	
+	<LinearLayout android:id="@+id/panel1"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<TextView android:text="Panel 0"
+			android:id="@+id/panelLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"/>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/panel2"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<TextView android:text="Panel 1"
+			android:id="@+id/panelLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"/>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/panel3"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<TextView android:text="Panel -1"
+			android:id="@+id/panelLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"/>
+	</LinearLayout>
+</ViewFlipper>
