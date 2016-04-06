@@ -78,6 +78,7 @@ public class DataProvider
 	
 	public void loadImage(final String src, final ImageView dest) {
 		// TODO: make it cancellable?
+		// TODO: image cache (yes, here!)
 		
 		get(src, new DataHandler() {
 			public Object process(InputStream in) {
