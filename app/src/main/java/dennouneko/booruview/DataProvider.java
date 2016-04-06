@@ -44,7 +44,7 @@ public class DataProvider
 			}
 
 			protected void onPostExecute(Object in) {
-				CookieStore jar = getJar();
+				/*CookieStore jar = getJar();
 				List<HttpCookie> cookies = jar.getCookies();
 
 				StringBuilder tmp = new StringBuilder();
