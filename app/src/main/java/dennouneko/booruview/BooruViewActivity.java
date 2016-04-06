@@ -9,6 +9,7 @@ import android.view.*;
 import java.io.*;
 import android.content.*;
 import android.text.method.*;
+import org.json.*;
 
 public class BooruViewActivity extends Activity 
 {
@@ -17,6 +18,8 @@ public class BooruViewActivity extends Activity
 	float oldTouchValue;
 	int panelNum = 0;
 	int viewNum = 0;
+	
+	public String curServer = "http://safebooru.donmai.us";
 	
 	private Interpolator getAnimationInterpolator() {
 		return new AccelerateDecelerateInterpolator();
@@ -90,13 +93,21 @@ public class BooruViewActivity extends Activity
 		curLabel.setText(String.format("Panel %d, %d/%d", panelNum, curId + 1, cnt));
 		prevLabel.setText(String.format("Panel %d", panelNum - 1));
 		
-		ImageView img = (ImageView)cur.findViewById(R.id.panelImage);
+		final ImageView img = (ImageView)cur.findViewById(R.id.panelImage);
 		img.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher));
-		//data.loadImage("http://safebooru.donmai.us/data/preview/fd2e5065943f45f57fbd10bb5bfcc6fb.jpg", img);
-		data.loadPage("http://safebooru.donmai.us/posts/2262900.xml", new DataProvider.DataCallback() {
+		data.loadPage(curServer + "/posts/2262900.json", new DataProvider.DataCallback() {
 			public void onDataReady(Object in) {
-				String val = (String)in;
-				curLabel.append("\n" + val);
+				try {
+					String val = (String)in;
+					JSONObject root = new JSONObject(val);
+					// curLabel.append("\n" + val);
+					curLabel.append("\n" + root.getString("md5"));
+					// data.loadImage("http://safebooru.donmai.us/data/sample/sample-fd2e5065943f45f57fbd10bb5bfcc6fb.jpg", img);
+					data.loadImage(curServer + root.getString("large_file_url"), img);
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
