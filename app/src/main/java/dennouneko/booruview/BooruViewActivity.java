@@ -6,10 +6,14 @@ import android.widget.*;
 import android.view.animation.*;
 import android.view.View.*;
 import android.view.*;
+import java.io.*;
+import android.content.*;
+import android.text.method.*;
 
 public class BooruViewActivity extends Activity 
 {
 	ViewFlipper flipper;
+	DataProvider data;
 	float oldTouchValue;
 	int panelNum = 0;
 	int viewNum = 0;
@@ -80,11 +84,21 @@ public class BooruViewActivity extends Activity
 		
 		// do the updates
 		TextView nextLabel = (TextView)next.findViewById(R.id.panelLabel);
-		TextView curLabel  = (TextView)cur.findViewById(R.id.panelLabel);
+		final TextView curLabel  = (TextView)cur.findViewById(R.id.panelLabel);
 		TextView prevLabel = (TextView)prev.findViewById(R.id.panelLabel);
 		nextLabel.setText(String.format("Panel %d", panelNum + 1));
 		curLabel.setText(String.format("Panel %d, %d/%d", panelNum, curId + 1, cnt));
 		prevLabel.setText(String.format("Panel %d", panelNum - 1));
+		
+		ImageView img = (ImageView)cur.findViewById(R.id.panelImage);
+		img.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher));
+		//data.loadImage("http://safebooru.donmai.us/data/preview/fd2e5065943f45f57fbd10bb5bfcc6fb.jpg", img);
+		data.loadPage("http://safebooru.donmai.us/posts/2262900.xml", new DataProvider.DataCallback() {
+			public void onDataReady(Object in) {
+				String val = (String)in;
+				curLabel.append("\n" + val);
+			}
+		});
 	}
 	
     @Override
@@ -94,6 +108,7 @@ public class BooruViewActivity extends Activity
         setContentView(R.layout.main);
 		
 		flipper = (ViewFlipper)findViewById(R.id.flipper);
+		data = new DataProvider(this);
 		
 		flipper.setOnTouchListener(new SwipeListener(BooruViewActivity.this) {
 			public void onSwipeRight() {
@@ -151,6 +166,12 @@ public class BooruViewActivity extends Activity
 			}
 		});
 		
+		for(int i = 0; i < flipper.getChildCount(); i++) {
+			View v = flipper.getChildAt(i);
+			TextView t = (TextView)v.findViewById(R.id.panelLabel);
+			t.setMovementMethod(new ScrollingMovementMethod());
+		}
+
 		updateViewContent();
     }
 }
