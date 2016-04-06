@@ -21,60 +21,6 @@ public class BooruViewActivity extends Activity
 	
 	public String curServer = "http://safebooru.donmai.us";
 	
-	private Interpolator getAnimationInterpolator() {
-		return new AccelerateDecelerateInterpolator();
-	}
-	
-	private Animation inFromRightAnimation() {
-		Animation inFromRight = new TranslateAnimation(
-			Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-		);
-		inFromRight.setDuration(500);
-		inFromRight.setInterpolator(getAnimationInterpolator());
-		return inFromRight;
-	}
-	
-	private Animation outToRightAnimation() {
-		Animation outToRight = new TranslateAnimation(
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, +1.0f,
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-		);
-		outToRight.setDuration(500);
-		outToRight.setInterpolator(getAnimationInterpolator());
-		return outToRight;
-	}
-	
-	private Animation inFromLeftAnimation() {
-		Animation inFromLeft = new TranslateAnimation(
-			Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-		);
-		inFromLeft.setDuration(500);
-		inFromLeft.setInterpolator(getAnimationInterpolator());
-		return inFromLeft;
-	}
-	
-	private Animation outToLeftAnimation() {
-		Animation outToLeft = new TranslateAnimation(
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f,
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-		);
-		outToLeft.setDuration(500);
-		outToLeft.setInterpolator(getAnimationInterpolator());
-		return outToLeft;
-	}
-	
-	private Animation.AnimationListener onAnimationEnd() {
-		return new Animation.AnimationListener() {
-			public void onAnimationStart(Animation ani) {}
-			public void onAnimationRepeat(Animation ani) {}
-			public void onAnimationEnd(Animation ani) {
-				updateViewContent();
-			}
-		};
-	}
-	
 	private void updateViewContent() {
 		// TODO: update for any child count
 		View cur = flipper.getCurrentView();
@@ -112,6 +58,16 @@ public class BooruViewActivity extends Activity
 		});
 	}
 	
+	private Animation.AnimationListener onAnimationEnd() {
+		return new Animation.AnimationListener() {
+			public void onAnimationStart(Animation ani) {}
+			public void onAnimationRepeat(Animation ani) {}
+			public void onAnimationEnd(Animation ani) {
+				updateViewContent();
+			}
+		};
+	}
+	
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -129,8 +85,8 @@ public class BooruViewActivity extends Activity
 				}
 				if(panelNum > 0) {
 					panelNum--;
-					Animation in = inFromLeftAnimation();
-					Animation out = outToRightAnimation();
+					Animation in = AnimationHelper.inFromLeftAnimation();
+					Animation out = AnimationHelper.outToRightAnimation();
 					in.setAnimationListener(onAnimationEnd());
 					flipper.setInAnimation(in);
 					flipper.setOutAnimation(out);
@@ -150,8 +106,8 @@ public class BooruViewActivity extends Activity
 				}//*/
 				// if(panelNum < bufferedImageCount - 1) {
 				panelNum++;
-				Animation in = inFromRightAnimation();
-				Animation out = outToLeftAnimation();
+				Animation in = AnimationHelper.inFromRightAnimation();
+				Animation out = AnimationHelper.outToLeftAnimation();
 				in.setAnimationListener(onAnimationEnd());
 				flipper.setInAnimation(in);
 				flipper.setOutAnimation(out);
