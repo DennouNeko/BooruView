@@ -3,74 +3,7 @@
     android:layout_height="fill_parent"
 	android:id="@+id/flipper"
     android:gravity="center">
-	
-	<LinearLayout android:id="@+id/panel1"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical">
-		<TextView android:text="Panel 0"
-			android:id="@+id/panelLabel"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:maxLines="10"
-			android:scrollbars="vertical"/>
-		<GridView
-			android:id="@+id/mainGridView"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:columnWidth="90dp"
-			android:numColumns="auto_fit"
-			android:verticalSpacing="10dp"
-			android:horizontalSpacing="10dp"
-			android:stretchMode="columnWidth"
-			android:gravity="center"
-		/>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/panel2"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical">
-		<TextView android:text="Panel 1"
-			android:id="@+id/panelLabel"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:maxLines="10"
-			android:scrollbars="vertical"/>
-		<GridView
-			android:id="@+id/mainGridView"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:columnWidth="90dp"
-			android:numColumns="auto_fit"
-			android:verticalSpacing="10dp"
-			android:horizontalSpacing="10dp"
-			android:stretchMode="columnWidth"
-			android:gravity="center"
-		/>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/panel3"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical">
-		<TextView android:text="Panel -1"
-			android:id="@+id/panelLabel"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_horizontal"
-			android:maxLines="10"
-			android:scrollbars="vertical"/>
-		<GridView
-			android:id="@+id/mainGridView"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:columnWidth="90dp"
-			android:numColumns="auto_fit"
-			android:verticalSpacing="10dp"
-			android:horizontalSpacing="10dp"
-			android:stretchMode="columnWidth"
-			android:gravity="center"
-		/>
-	</LinearLayout>
+	<include layout="@layout/grid_panel" />
+	<include layout="@layout/grid_panel" />
+	<include layout="@layout/grid_panel" />
 </ViewFlipper>
