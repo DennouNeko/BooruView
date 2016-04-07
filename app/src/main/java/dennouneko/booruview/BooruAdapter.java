@@ -8,6 +8,7 @@ public class BooruAdapter extends BaseAdapter
 {
 	private Context mCtx;
 	JSONArray imgArray;
+	int gridSize = 100;
 	
 	public BooruAdapter(Context ctx, JSONArray data) {
 		mCtx = ctx;
@@ -37,9 +38,9 @@ public class BooruAdapter extends BaseAdapter
 		ImageView ret;
 		if(convertView == null) {
 			ret = new ImageView(mCtx);
-			ret.setLayoutParams(new GridView.LayoutParams(85, 85));
+			ret.setLayoutParams(new GridView.LayoutParams(gridSize, gridSize));
 			ret.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			ret.setPadding(8, 8, 8, 8);
+			//ret.setPadding(8, 8, 8, 8);
 		}
 		else
 		{
@@ -48,7 +49,6 @@ public class BooruAdapter extends BaseAdapter
 		try {
 			DataProvider data = DataProvider.getInstance(mCtx.getApplicationContext());
 			JSONObject item = (JSONObject)getItem(position);
-			ret.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
 			data.loadImage(((BooruViewActivity)mCtx).curServer + item.getString("preview_file_url"), ret);
 		}
 		catch(Exception e) {

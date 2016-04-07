@@ -76,6 +76,7 @@ public class DataProvider
 		// TODO: make it cancellable?
 		// TODO: image cache (yes, here!)
 		
+		dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
 		get(src, new DataHandler() {
 			public Object process(InputStream in) {
 				Bitmap bmp = BitmapFactory.decodeStream(in);

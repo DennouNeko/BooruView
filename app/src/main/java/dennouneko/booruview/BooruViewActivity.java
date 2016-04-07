@@ -16,7 +16,8 @@ public class BooruViewActivity extends Activity
 {
 	ViewFlipper flipper;
 	float oldTouchValue;
-	int panelNum = 1;
+	int postLimit = 15;
+	int pageNum = 1;
 	int viewNum = 0;
 	
 	public String curServer = "http://safebooru.donmai.us";
@@ -36,11 +37,11 @@ public class BooruViewActivity extends Activity
 		TextView nextLabel = (TextView)next.findViewById(R.id.panelLabel);
 		final TextView curLabel  = (TextView)cur.findViewById(R.id.panelLabel);
 		TextView prevLabel = (TextView)prev.findViewById(R.id.panelLabel);
-		nextLabel.setText(String.format("Panel %d", panelNum + 1));
-		curLabel.setText(String.format("Panel %d, %d/%d", panelNum, curId + 1, cnt));
-		prevLabel.setText(String.format("Panel %d", panelNum - 1));
+		nextLabel.setText(String.format("Page %d", pageNum + 1));
+		curLabel.setText(String.format("Page %d, Panel %d/%d", pageNum, curId + 1, cnt));
+		prevLabel.setText(String.format("Page %d", pageNum - 1));
 		
-		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", 20, panelNum), new DataProvider.DataCallback() {
+		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DataProvider.DataCallback() {
 			public void onDataReady(Object in) {
 				String val = (String)in;
 				try {
@@ -88,12 +89,12 @@ public class BooruViewActivity extends Activity
 		
 		flipper.setOnTouchListener(new SwipeListener(BooruViewActivity.this) {
 			public void onSwipeRight() {
-				if(panelNum <= 0) {
+				if(pageNum <= 0) {
 					// TODO: check for new posts
 					// and update panelNum if necessary
 				}
-				if(panelNum > 0) {
-					panelNum--;
+				if(pageNum > 0) {
+					pageNum--;
 					Animation in = AnimationHelper.inFromLeftAnimation();
 					Animation out = AnimationHelper.outToRightAnimation();
 					in.setAnimationListener(onAnimationEnd());
@@ -114,7 +115,7 @@ public class BooruViewActivity extends Activity
 					// update panelNum if necessary
 				}//*/
 				// if(panelNum < bufferedImageCount - 1) {
-				panelNum++;
+				pageNum++;
 				Animation in = AnimationHelper.inFromRightAnimation();
 				Animation out = AnimationHelper.outToLeftAnimation();
 				in.setAnimationListener(onAnimationEnd());
