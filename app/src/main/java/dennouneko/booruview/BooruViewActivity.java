@@ -10,12 +10,13 @@ import java.io.*;
 import android.content.*;
 import android.text.method.*;
 import org.json.*;
+import android.widget.AdapterView.*;
 
 public class BooruViewActivity extends Activity 
 {
 	ViewFlipper flipper;
 	float oldTouchValue;
-	int panelNum = 0;
+	int panelNum = 1;
 	int viewNum = 0;
 	
 	public String curServer = "http://safebooru.donmai.us";
@@ -23,7 +24,7 @@ public class BooruViewActivity extends Activity
 	private void updateViewContent() {
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
 		// TODO: update for any child count
-		View cur = flipper.getCurrentView();
+		final View cur = flipper.getCurrentView();
 		int curId = flipper.getDisplayedChild();
 		int cnt = flipper.getChildCount();
 		int nextId = curId + 1 >= cnt ? 0 : curId + 1;
@@ -39,41 +40,26 @@ public class BooruViewActivity extends Activity
 		curLabel.setText(String.format("Panel %d, %d/%d", panelNum, curId + 1, cnt));
 		prevLabel.setText(String.format("Panel %d", panelNum - 1));
 		
-		final ImageView img = (ImageView)cur.findViewById(R.id.panelImage);
-		img.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher));
-		data.loadPage(curServer + "/posts/2262900.json", new DataProvider.DataCallback() {
+		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", 20, panelNum), new DataProvider.DataCallback() {
 			public void onDataReady(Object in) {
+				String val = (String)in;
 				try {
-					String val = (String)in;
-					final JSONObject root = new JSONObject(val);
-					curLabel.append("\n" + val);
-					// curLabel.append("\n" + root.getString("md5"));
-					makeImageButton(img, root);
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	private void makeImageButton(ImageView obj, JSONObject root) {
-		try {
-			DataProvider.getInstance(getApplicationContext()).loadImage(curServer + root.getString("preview_file_url"), obj);
-			addPreview(obj, curServer + root.getString("large_file_url"));
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void addPreview(View obj, final String src) {
-		obj.setOnClickListener(new OnClickListener() {
-			public void onClick(View p1) {
-				try {
-					Intent myIntent = new Intent(BooruViewActivity.this, PreviewActivity.class);
-					myIntent.putExtra(PreviewActivity.PREVIEW_SRC, src);
-					startActivity(myIntent);
+					final JSONArray pageData = new JSONArray(val);
+					GridView grid = (GridView)cur.findViewById(R.id.mainGridView);
+					grid.setAdapter(new BooruAdapter(BooruViewActivity.this, pageData));
+					grid.setOnItemClickListener(new OnItemClickListener() {
+						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+							try {
+								JSONObject item = pageData.getJSONObject(position);
+								Intent myIntent = new Intent(BooruViewActivity.this, PreviewActivity.class);
+								myIntent.putExtra(PreviewActivity.PREVIEW_SRC, curServer + item.getString("large_file_url"));
+								startActivity(myIntent);
+							}
+							catch(Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -96,10 +82,6 @@ public class BooruViewActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-		// remove title
-		/*requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-							WindowManager.LayoutParams.FLAG_FULLSCREEN);//*/
         setContentView(R.layout.main);
 		
 		flipper = (ViewFlipper)findViewById(R.id.flipper);

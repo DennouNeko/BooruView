@@ -52,18 +52,6 @@ public class DataProvider
 			}
 
 			protected void onPostExecute(Object in) {
-				/*CookieStore jar = getJar();
-				List<HttpCookie> cookies = jar.getCookies();
-
-				StringBuilder tmp = new StringBuilder();
-
-				for(HttpCookie c : cookies) {
-					if(tmp.length() > 0) tmp.append("\n");
-					tmp.append(c.getName() + "=" + c.getValue());
-				}
-
-				Toast.makeText(mCtx.getApplicationContext(), tmp.toString(), Toast.LENGTH_LONG).show();
-				//*/
 				if(responseCode < 200 || responseCode >= 300) {
 					callback.onError(in, responseCode);
 				}

@@ -15,11 +15,17 @@
 			android:layout_gravity="center_horizontal"
 			android:maxLines="10"
 			android:scrollbars="vertical"/>
-		<ImageView android:src="@drawable/ic_launcher"
-			android:id="@+id/panelImage"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center|clip_horizontal|clip_vertical"/>
+		<GridView
+			android:id="@+id/mainGridView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:columnWidth="90dp"
+			android:numColumns="auto_fit"
+			android:verticalSpacing="10dp"
+			android:horizontalSpacing="10dp"
+			android:stretchMode="columnWidth"
+			android:gravity="center"
+		/>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/panel2"
 		android:layout_width="fill_parent"
@@ -32,11 +38,17 @@
 			android:layout_gravity="center_horizontal"
 			android:maxLines="10"
 			android:scrollbars="vertical"/>
-		<ImageView android:src="@drawable/ic_launcher"
-			android:id="@+id/panelImage"
+		<GridView
+			android:id="@+id/mainGridView"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center|clip_horizontal|clip_vertical"/>
+			android:layout_height="match_parent"
+			android:columnWidth="90dp"
+			android:numColumns="auto_fit"
+			android:verticalSpacing="10dp"
+			android:horizontalSpacing="10dp"
+			android:stretchMode="columnWidth"
+			android:gravity="center"
+		/>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/panel3"
 		android:layout_width="fill_parent"
@@ -49,10 +61,16 @@
 			android:layout_gravity="center_horizontal"
 			android:maxLines="10"
 			android:scrollbars="vertical"/>
-		<ImageView android:src="@drawable/ic_launcher"
-			android:id="@+id/panelImage"
+		<GridView
+			android:id="@+id/mainGridView"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center|clip_horizontal|clip_vertical"/>
+			android:layout_height="match_parent"
+			android:columnWidth="90dp"
+			android:numColumns="auto_fit"
+			android:verticalSpacing="10dp"
+			android:horizontalSpacing="10dp"
+			android:stretchMode="columnWidth"
+			android:gravity="center"
+		/>
 	</LinearLayout>
 </ViewFlipper>
