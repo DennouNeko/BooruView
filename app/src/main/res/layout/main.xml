@@ -17,7 +17,7 @@
 			android:scrollbars="vertical"/>
 		<ImageView android:src="@drawable/ic_launcher"
 			android:id="@+id/panelImage"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center|clip_horizontal|clip_vertical"/>
 	</LinearLayout>

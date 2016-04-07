@@ -14,7 +14,6 @@ import org.json.*;
 public class BooruViewActivity extends Activity 
 {
 	ViewFlipper flipper;
-	DataProvider data;
 	float oldTouchValue;
 	int panelNum = 0;
 	int viewNum = 0;
@@ -22,6 +21,7 @@ public class BooruViewActivity extends Activity
 	public String curServer = "http://safebooru.donmai.us";
 	
 	private void updateViewContent() {
+		final DataProvider data = DataProvider.getInstance(getApplicationContext());
 		// TODO: update for any child count
 		View cur = flipper.getCurrentView();
 		int curId = flipper.getDisplayedChild();
@@ -45,11 +45,23 @@ public class BooruViewActivity extends Activity
 			public void onDataReady(Object in) {
 				try {
 					String val = (String)in;
-					JSONObject root = new JSONObject(val);
-					// curLabel.append("\n" + val);
-					curLabel.append("\n" + root.getString("md5"));
+					final JSONObject root = new JSONObject(val);
+					curLabel.append("\n" + val);
+					// curLabel.append("\n" + root.getString("md5"));
 					// data.loadImage("http://safebooru.donmai.us/data/sample/sample-fd2e5065943f45f57fbd10bb5bfcc6fb.jpg", img);
-					data.loadImage(curServer + root.getString("large_file_url"), img);
+					data.loadImage(curServer + root.getString("preview_file_url"), img);
+					img.setOnClickListener(new OnClickListener() {
+						public void onClick(View p1) {
+							try {
+								Intent myIntent = new Intent(BooruViewActivity.this, PreviewActivity.class);
+								myIntent.putExtra(PreviewActivity.PREVIEW_SRC, curServer + root.getString("large_file_url"));
+								startActivity(myIntent);
+							}
+							catch(Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -72,10 +84,13 @@ public class BooruViewActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+		// remove title
+		/*requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+							WindowManager.LayoutParams.FLAG_FULLSCREEN);//*/
         setContentView(R.layout.main);
 		
 		flipper = (ViewFlipper)findViewById(R.id.flipper);
-		data = new DataProvider(this);
 		
 		flipper.setOnTouchListener(new SwipeListener(BooruViewActivity.this) {
 			public void onSwipeRight() {

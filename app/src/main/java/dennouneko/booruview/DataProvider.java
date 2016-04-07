@@ -12,10 +12,18 @@ public class DataProvider
 {
 	Context mCtx;
 	CookieManager jar;
+	static DataProvider instance = null;
 	
-	public DataProvider(Context ctx) {
+	private DataProvider(Context ctx) {
 		mCtx = ctx;
 		CookieHandler.setDefault(jar = new CookieManager(null, CookiePolicy.ACCEPT_ALL));
+	}
+	
+	static public DataProvider getInstance(Context appCtx) {
+		if(instance == null) {
+			instance = new DataProvider(appCtx);
+		}
+		return instance;
 	}
 	
 	private void get(String url, final DataHandler handler, final DataCallback callback) {
