@@ -48,20 +48,32 @@ public class BooruViewActivity extends Activity
 					final JSONObject root = new JSONObject(val);
 					curLabel.append("\n" + val);
 					// curLabel.append("\n" + root.getString("md5"));
-					// data.loadImage("http://safebooru.donmai.us/data/sample/sample-fd2e5065943f45f57fbd10bb5bfcc6fb.jpg", img);
-					data.loadImage(curServer + root.getString("preview_file_url"), img);
-					img.setOnClickListener(new OnClickListener() {
-						public void onClick(View p1) {
-							try {
-								Intent myIntent = new Intent(BooruViewActivity.this, PreviewActivity.class);
-								myIntent.putExtra(PreviewActivity.PREVIEW_SRC, curServer + root.getString("large_file_url"));
-								startActivity(myIntent);
-							}
-							catch(Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});
+					makeImageButton(img, root);
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	private void makeImageButton(ImageView obj, JSONObject root) {
+		try {
+			DataProvider.getInstance(getApplicationContext()).loadImage(curServer + root.getString("preview_file_url"), obj);
+			addPreview(obj, curServer + root.getString("large_file_url"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void addPreview(View obj, final String src) {
+		obj.setOnClickListener(new OnClickListener() {
+			public void onClick(View p1) {
+				try {
+					Intent myIntent = new Intent(BooruViewActivity.this, PreviewActivity.class);
+					myIntent.putExtra(PreviewActivity.PREVIEW_SRC, src);
+					startActivity(myIntent);
 				}
 				catch(Exception e) {
 					e.printStackTrace();
