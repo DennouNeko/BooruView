@@ -7,16 +7,19 @@ import android.util.*;
 import android.graphics.*;
 import android.content.*;
 import java.util.*;
+import android.app.*;
 
 public class DataProvider
 {
 	Context mCtx;
 	CookieManager jar;
+	ImageCache cache;
 	static DataProvider instance = null;
 	
 	private DataProvider(Context ctx) {
 		mCtx = ctx;
 		CookieHandler.setDefault(jar = new CookieManager(null, CookiePolicy.ACCEPT_ALL));
+		cache = new ImageCache(ctx, ctx.getCacheDir().getAbsolutePath());
 	}
 	
 	static public DataProvider getInstance(Context appCtx) {
@@ -26,7 +29,7 @@ public class DataProvider
 		return instance;
 	}
 	
-	private void get(String url, final DataHandler handler, final DataCallback callback) {
+	public void get(String url, final DataHandler handler, final DataCallback callback) {
 		AsyncTask<String, Void, Object> bg = new AsyncTask<String, Void, Object>() {
 			private static final String DEBUG_TAG = "DataProvider$query$AsyncTask";
 			private int responseCode = -1;
@@ -74,25 +77,41 @@ public class DataProvider
 	
 	public void loadImage(final String src, final ImageView dest) {
 		// TODO: make it cancellable?
-		// TODO: image cache (yes, here!)
 		
-		dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
-		get(src, new DataHandler() {
-			public Object process(InputStream in) {
-				Bitmap bmp = BitmapFactory.decodeStream(in);
-				return bmp;
-			}
-		}, new DataCallback() {
-			public void onDataReady(Object in) {
-				Bitmap bmp = (Bitmap)in;
-				dest.setImageBitmap(bmp);
-			//	Toast.makeText(mCtx.getApplicationContext(), "Done.", Toast.LENGTH_SHORT).show();
-			}
-			
-			public void onError(InputStream in, int code) {
-				Toast.makeText(mCtx.getApplicationContext(), String.format("GET %d\n%s", code, src), Toast.LENGTH_LONG).show();
-			}
-		});
+		Bitmap cbmp = cache.get(src);
+		if(cbmp == null) {
+			dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
+			get(src, new DataHandler() {
+				public Object process(InputStream in) {
+					Bitmap bmp = BitmapFactory.decodeStream(in);
+					return bmp;
+				}
+			},
+			new DataCallback() {
+				public void onDataReady(Object in) {
+					Bitmap bmp = (Bitmap)in;
+					cache.put(src, bmp);
+					dest.setImageBitmap(bmp);
+					//	Toast.makeText(mCtx.getApplicationContext(), "Done.", Toast.LENGTH_SHORT).show();
+				}
+
+				public void onError(InputStream in, int code) {
+					Toast.makeText(mCtx.getApplicationContext(), String.format("GET %d\n%s", code, src), Toast.LENGTH_LONG).show();
+				}
+			});
+		}
+		else
+		{
+			dest.setImageBitmap(cbmp);
+		}
+	}
+	
+	public void downloadFile(String src, String dst) {
+		DownloadManager dm = (DownloadManager)mCtx.getSystemService(Context.DOWNLOAD_SERVICE);
+		if(dst == null) {
+			dst = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+			// TODO: save the file!
+		}
 	}
 	
 	public static String getAsString(InputStream in) {

@@ -54,6 +54,7 @@ public class BooruViewActivity extends Activity
 								JSONObject item = pageData.getJSONObject(position);
 								Intent myIntent = new Intent(BooruViewActivity.this, PreviewActivity.class);
 								myIntent.putExtra(PreviewActivity.PREVIEW_SRC, curServer + item.getString("large_file_url"));
+								myIntent.putExtra(PreviewActivity.FULL_SRC, curServer + item.getString("file_url"));
 								startActivity(myIntent);
 							}
 							catch(Exception e) {
