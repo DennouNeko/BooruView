@@ -45,6 +45,8 @@ public class PreviewActivity extends Activity
 				String msgSaving = getResources().getString(R.string.msgSaving);
 				String msg = String.format(msgSaving, fullImage);
 				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+				DataProvider data = DataProvider.getInstance(getApplicationContext());
+				data.downloadFile(fullImage, null);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

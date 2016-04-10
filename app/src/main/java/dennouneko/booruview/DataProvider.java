@@ -8,6 +8,7 @@ import android.graphics.*;
 import android.content.*;
 import java.util.*;
 import android.app.*;
+import android.net.*;
 
 public class DataProvider
 {
@@ -116,6 +117,15 @@ public class DataProvider
 		if(dst == null) {
 			dst = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 		}
+		Uri srcUri = Uri.parse(src);
+		String filename = srcUri.getLastPathSegment();
+		DownloadManager.Request request = new DownloadManager.Request(srcUri);
+		request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+		request.setAllowedOverRoaming(true);
+		request.setTitle(filename);
+		request.setDestinationInExternalFilesDir(mCtx, dst, filename);
+		request.allowScanningByMediaScanner();
+		dm.enqueue(request);
 	}
 	
 	public static String getAsString(InputStream in) {
