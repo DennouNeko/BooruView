@@ -14,12 +14,18 @@ public class DataProvider
 	Context mCtx;
 	CookieManager jar;
 	ImageCache cache;
+	String cacheDir;
 	static DataProvider instance = null;
 	
 	private DataProvider(Context ctx) {
 		mCtx = ctx;
 		CookieHandler.setDefault(jar = new CookieManager(null, CookiePolicy.ACCEPT_ALL));
-		cache = new ImageCache(ctx, ctx.getCacheDir().getAbsolutePath());
+		cacheDir = ctx.getCacheDir().getAbsolutePath();
+		cache = new ImageCache(ctx, cacheDir);
+	}
+	
+	public void clearCache() {
+		cache.purge(cacheDir);
 	}
 	
 	static public DataProvider getInstance(Context appCtx) {
@@ -92,7 +98,6 @@ public class DataProvider
 					Bitmap bmp = (Bitmap)in;
 					cache.put(src, bmp);
 					dest.setImageBitmap(bmp);
-					//	Toast.makeText(mCtx.getApplicationContext(), "Done.", Toast.LENGTH_SHORT).show();
 				}
 
 				public void onError(InputStream in, int code) {
@@ -110,7 +115,6 @@ public class DataProvider
 		DownloadManager dm = (DownloadManager)mCtx.getSystemService(Context.DOWNLOAD_SERVICE);
 		if(dst == null) {
 			dst = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-			// TODO: save the file!
 		}
 	}
 	

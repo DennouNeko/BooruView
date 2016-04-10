@@ -152,4 +152,27 @@ public class BooruViewActivity extends Activity
 
 		updateViewContent();
     }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId()) {
+			case R.id.menuPurgeCache:
+				DataProvider data = DataProvider.getInstance(BooruViewActivity.this);
+				data.clearCache();
+				String msg = getResources().getString(R.string.msgPurged);
+				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 }

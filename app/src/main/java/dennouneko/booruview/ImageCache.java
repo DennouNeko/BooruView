@@ -14,8 +14,6 @@ public class ImageCache
 	public ImageCache(Context ctx, String root_dir) {
 		mDir = root_dir;
 		mCtx = ctx;
-		
-		// purge(mDir);
 	}
 	
 	public Bitmap get(String url) {
@@ -44,7 +42,6 @@ public class ImageCache
 			mkdir(filename);
 			out = new FileOutputStream(filename);
 			bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
-			// Toast.makeText(mCtx, "Saved " + filename, Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
 			e.printStackTrace();
 			Toast.makeText(mCtx, e.getMessage(), Toast.LENGTH_SHORT).show();

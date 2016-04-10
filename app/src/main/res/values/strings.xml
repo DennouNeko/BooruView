@@ -2,6 +2,10 @@
 <resources>
 
     <string name="app_name">BooruView</string>
+	
     <string name="menuSave">Save</string>
 	<string name="msgSaving">Saving %s...</string>
+	
+	<string name="menuPurgeCache">Clear Cache</string>
+	<string name="msgPurged">Cache has been purged.</string>
 </resources>
