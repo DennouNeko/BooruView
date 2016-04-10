@@ -113,19 +113,25 @@ public class DataProvider
 	}
 	
 	public void downloadFile(String src, String dst) {
-		DownloadManager dm = (DownloadManager)mCtx.getSystemService(Context.DOWNLOAD_SERVICE);
-		if(dst == null) {
-			dst = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+		try {
+			DownloadManager dm = (DownloadManager)mCtx.getSystemService(Context.DOWNLOAD_SERVICE);
+			if(dst == null) {
+				dst = Environment.DIRECTORY_DOWNLOADS;
+			}
+			Uri srcUri = Uri.parse(src);
+			String filename = srcUri.getLastPathSegment();
+			DownloadManager.Request request = new DownloadManager.Request(srcUri);
+			request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+			request.setAllowedOverRoaming(true);
+			request.setTitle(filename);
+			request.setDestinationInExternalPublicDir(dst, filename);
+			request.allowScanningByMediaScanner();
+			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+			dm.enqueue(request);
 		}
-		Uri srcUri = Uri.parse(src);
-		String filename = srcUri.getLastPathSegment();
-		DownloadManager.Request request = new DownloadManager.Request(srcUri);
-		request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-		request.setAllowedOverRoaming(true);
-		request.setTitle(filename);
-		request.setDestinationInExternalFilesDir(mCtx, dst, filename);
-		request.allowScanningByMediaScanner();
-		dm.enqueue(request);
+		catch(Exception e) {
+			Toast.makeText(mCtx, e.getMessage(), Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	public static String getAsString(InputStream in) {
