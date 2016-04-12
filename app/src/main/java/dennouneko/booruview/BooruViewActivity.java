@@ -26,8 +26,8 @@ public class BooruViewActivity extends Activity
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
 		// TODO: update for any child count
 		final View cur = flipper.getCurrentView();
-		int curId = flipper.getDisplayedChild();
-		int cnt = flipper.getChildCount();
+		final int curId = flipper.getDisplayedChild();
+		final int cnt = flipper.getChildCount();
 		int nextId = curId + 1 >= cnt ? 0 : curId + 1;
 		int prevId = curId - 1 < 0 ? cnt - 1 : curId - 1;
 		View next = flipper.getChildAt(nextId);
@@ -38,15 +38,23 @@ public class BooruViewActivity extends Activity
 		final TextView curLabel  = (TextView)cur.findViewById(R.id.panelLabel);
 		TextView prevLabel = (TextView)prev.findViewById(R.id.panelLabel);
 		nextLabel.setText(String.format("Page %d", pageNum + 1));
-		curLabel.setText(String.format("Page %d, Panel %d/%d", pageNum, curId + 1, cnt));
+		//curLabel.setText(String.format("Page %d, Panel %d/%d", pageNum, curId + 1, cnt));
+		curLabel.setText(String.format("Loading page %d...", pageNum));
 		prevLabel.setText(String.format("Page %d", pageNum - 1));
+		
+		GridView gridPrev = (GridView)prev.findViewById(R.id.mainGridView);
+		final GridView grid = (GridView)cur.findViewById(R.id.mainGridView);
+		GridView gridNext = (GridView)next.findViewById(R.id.mainGridView);
+		
+		gridPrev.setAdapter(null);
+		gridNext.setAdapter(null);
 		
 		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DataProvider.DataCallback() {
 			public void onDataReady(Object in) {
 				String val = (String)in;
+				curLabel.setText(String.format("Page %d, Panel %d/%d", pageNum, curId + 1, cnt));
 				try {
 					final JSONArray pageData = new JSONArray(val);
-					GridView grid = (GridView)cur.findViewById(R.id.mainGridView);
 					grid.setAdapter(new BooruAdapter(BooruViewActivity.this, pageData));
 					grid.setOnItemClickListener(new OnItemClickListener() {
 						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -88,43 +96,15 @@ public class BooruViewActivity extends Activity
 		
 		flipper = (ViewFlipper)findViewById(R.id.flipper);
 		
-		flipper.setOnTouchListener(new SwipeListener(BooruViewActivity.this) {
+		SwipeListener swipper = new SwipeListener(BooruViewActivity.this) {
 			public void onSwipeRight() {
-				if(pageNum <= 0) {
-					// TODO: check for new posts
-					// and update panelNum if necessary
-				}
-				if(pageNum > 0) {
-					pageNum--;
-					Animation in = AnimationHelper.inFromLeftAnimation();
-					Animation out = AnimationHelper.outToRightAnimation();
-					in.setAnimationListener(onAnimationEnd());
-					flipper.setInAnimation(in);
-					flipper.setOutAnimation(out);
-					flipper.showPrevious();
-				}
-				else {
-					Toast.makeText(getApplicationContext(), "No new images.", Toast.LENGTH_SHORT).show();
-				}
+				doPrevPage();
 				super.onSwipeRight();
 			}
 			
 			public void onSwipeLeft() {
-				/* if(panelNum >= bufferedImageCount - 1) {
-					// TODO: fetch new chunk of images,
-					// try to sync if data shifted?
-					// update panelNum if necessary
-				}//*/
-				// if(panelNum < bufferedImageCount - 1) {
-				pageNum++;
-				Animation in = AnimationHelper.inFromRightAnimation();
-				Animation out = AnimationHelper.outToLeftAnimation();
-				in.setAnimationListener(onAnimationEnd());
-				flipper.setInAnimation(in);
-				flipper.setOutAnimation(out);
-				flipper.showNext();
+				doNextPage();
 				super.onSwipeLeft();
-				//}
 			}
 			
 			public void onSwipeCancel() {
@@ -142,7 +122,9 @@ public class BooruViewActivity extends Activity
 								   currentView.getBottom());
 				super.onFingerMove(x1, y1, x2, y2);
 			}
-		});
+		};
+		
+		flipper.setOnTouchListener(swipper);
 		
 		for(int i = 0; i < flipper.getChildCount(); i++) {
 			View v = flipper.getChildAt(i);
@@ -152,6 +134,42 @@ public class BooruViewActivity extends Activity
 
 		updateViewContent();
     }
+	
+	public void doPrevPage() {
+		if(pageNum <= 0) {
+			// TODO: check for new posts
+			// and update pageNum if necessary
+		}
+		if(pageNum > 0) {
+			pageNum--;
+			Animation in = AnimationHelper.inFromLeftAnimation();
+			Animation out = AnimationHelper.outToRightAnimation();
+			in.setAnimationListener(onAnimationEnd());
+			flipper.setInAnimation(in);
+			flipper.setOutAnimation(out);
+			flipper.showPrevious();
+		}
+		else {
+			Toast.makeText(getApplicationContext(), "No new images.", Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	public void doNextPage() {
+		/* if(panelNum >= bufferedImageCount - 1) {
+		 // TODO: fetch new chunk of images,
+		 // try to sync if data shifted?
+		 // update panelNum if necessary
+		 }//*/
+		// if(panelNum < bufferedImageCount - 1) {
+		pageNum++;
+		Animation in = AnimationHelper.inFromRightAnimation();
+		Animation out = AnimationHelper.outToLeftAnimation();
+		in.setAnimationListener(onAnimationEnd());
+		flipper.setInAnimation(in);
+		flipper.setOutAnimation(out);
+		flipper.showNext();
+		//}
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
