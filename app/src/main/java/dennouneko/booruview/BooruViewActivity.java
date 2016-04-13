@@ -15,6 +15,7 @@ import android.widget.AdapterView.*;
 public class BooruViewActivity extends Activity 
 {
 	ViewFlipper flipper;
+	SwipeListener swipper;
 	float oldTouchValue;
 	int postLimit = 15;
 	int pageNum = 1;
@@ -88,25 +89,18 @@ public class BooruViewActivity extends Activity
 		};
 	}
 	
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-		
-		flipper = (ViewFlipper)findViewById(R.id.flipper);
-		
-		SwipeListener swipper = new SwipeListener(BooruViewActivity.this) {
+	private SwipeListener makeSwipeListener(Context ctx) {
+		return new SwipeListener(ctx) {
 			public void onSwipeRight() {
 				doPrevPage();
 				super.onSwipeRight();
 			}
-			
+
 			public void onSwipeLeft() {
 				doNextPage();
 				super.onSwipeLeft();
 			}
-			
+
 			public void onSwipeCancel() {
 				final View currentView = flipper.getCurrentView();
 				currentView.layout(0, 
@@ -114,7 +108,7 @@ public class BooruViewActivity extends Activity
 								   currentView.getBottom());
 				super.onSwipeCancel();
 			}
-			
+
 			public void onFingerMove(float x1, float y1, float x2, float y2) {
 				final View currentView = flipper.getCurrentView();
 				currentView.layout((int)(x2 - x1), 
@@ -123,8 +117,16 @@ public class BooruViewActivity extends Activity
 				super.onFingerMove(x1, y1, x2, y2);
 			}
 		};
+	}
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
 		
-		flipper.setOnTouchListener(swipper);
+		swipper = makeSwipeListener(BooruViewActivity.this);
+		flipper = (ViewFlipper)findViewById(R.id.flipper);
 		
 		for(int i = 0; i < flipper.getChildCount(); i++) {
 			View v = flipper.getChildAt(i);
@@ -192,5 +194,12 @@ public class BooruViewActivity extends Activity
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev)
+	{
+		swipper.onTouch(flipper, ev);
+		return super.dispatchTouchEvent(ev);
 	}
 }
