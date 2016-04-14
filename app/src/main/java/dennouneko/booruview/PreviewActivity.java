@@ -5,6 +5,7 @@ import android.os.*;
 import android.widget.*;
 import android.view.*;
 import org.json.*;
+import android.text.method.*;
 
 public class PreviewActivity extends Activity
 {
@@ -21,12 +22,18 @@ public class PreviewActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
 		
+		RelativeLayout viewHost = (RelativeLayout)findViewById(R.id.previewHost);
+		TextView tagsView = (TextView)viewHost.findViewById(R.id.previewTags);
+		tagsView.setMovementMethod(new ScrollingMovementMethod());
+		
 		Intent intent = getIntent();
 		String src = intent.getStringExtra(PREVIEW_SRC);
 		curServer = intent.getStringExtra(SERVER_URL);
 		try {
 			item = new JSONObject(intent.getStringExtra(ITEM_DETAILS));
 			fullImage = curServer + item.getString("large_file_url");
+			String tag_string = item.getString("tag_string");
+			tagsView.setText(tag_string);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
