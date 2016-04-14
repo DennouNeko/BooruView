@@ -63,7 +63,8 @@ public class BooruViewActivity extends Activity
 								JSONObject item = pageData.getJSONObject(position);
 								Intent myIntent = new Intent(BooruViewActivity.this, PreviewActivity.class);
 								myIntent.putExtra(PreviewActivity.PREVIEW_SRC, curServer + item.getString("large_file_url"));
-								myIntent.putExtra(PreviewActivity.FULL_SRC, curServer + item.getString("file_url"));
+								myIntent.putExtra(PreviewActivity.ITEM_DETAILS, item.toString());
+								myIntent.putExtra(PreviewActivity.SERVER_URL, curServer);
 								startActivity(myIntent);
 							}
 							catch(Exception e) {
@@ -75,6 +76,10 @@ public class BooruViewActivity extends Activity
 				catch(Exception e) {
 					e.printStackTrace();
 				}
+			}
+			
+			public void onError(Object in, int code) {
+				curLabel.setText(String.format("Error: %d", code));
 			}
 		});
 	}

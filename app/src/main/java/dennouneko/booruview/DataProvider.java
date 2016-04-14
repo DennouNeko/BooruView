@@ -157,7 +157,7 @@ public class DataProvider
 	public static abstract class DataCallback {
 		// TODO: add params: header and content
 		public void onDataReady(Object in) {}
-		public void onError(Object in, Object code) {}
+		public void onError(Object in, int code) {}
 	}
 	
 	public static abstract class DataHandler {
