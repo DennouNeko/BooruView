@@ -34,7 +34,18 @@ public class PreviewActivity extends Activity
 			fullImage = curServer + item.getString("file_url");
 			String tag_string_character = item.getString("tag_string_character");
 			String tag_string_copyright = item.getString("tag_string_copyright");
-			tagsView.setText(String.format("%s\n(%s)", tag_string_character, tag_string_copyright));
+			String tagbox = "";
+			if(!tag_string_character.isEmpty()) {
+				tagbox = tag_string_character;
+			}
+			if(!tag_string_copyright.isEmpty()) {
+				tag_string_copyright = "(" + tag_string_copyright + ")";
+				if(!tagbox.isEmpty()) {
+					tagbox += "\n";
+				}
+				tagbox += tag_string_copyright;
+			}
+			tagsView.setText(tagbox);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
