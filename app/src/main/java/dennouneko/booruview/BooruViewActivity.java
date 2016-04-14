@@ -38,10 +38,10 @@ public class BooruViewActivity extends Activity
 		TextView nextLabel = (TextView)next.findViewById(R.id.panelLabel);
 		final TextView curLabel  = (TextView)cur.findViewById(R.id.panelLabel);
 		TextView prevLabel = (TextView)prev.findViewById(R.id.panelLabel);
-		nextLabel.setText(String.format("Page %d", pageNum + 1));
+		nextLabel.setText(String.format("Panel +1"));
 		//curLabel.setText(String.format("Page %d, Panel %d/%d", pageNum, curId + 1, cnt));
 		curLabel.setText(String.format("Loading page %d...", pageNum));
-		prevLabel.setText(String.format("Page %d", pageNum - 1));
+		prevLabel.setText(String.format("Panel -1"));
 		
 		GridView gridPrev = (GridView)prev.findViewById(R.id.mainGridView);
 		final GridView grid = (GridView)cur.findViewById(R.id.mainGridView);
@@ -53,7 +53,7 @@ public class BooruViewActivity extends Activity
 		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DataProvider.DataCallback() {
 			public void onDataReady(Object in) {
 				String val = (String)in;
-				curLabel.setText(String.format("Page %d, Panel %d/%d", pageNum, curId + 1, cnt));
+				curLabel.setText(String.format("Page %d", pageNum));
 				try {
 					final JSONArray pageData = new JSONArray(val);
 					grid.setAdapter(new BooruAdapter(BooruViewActivity.this, pageData));
