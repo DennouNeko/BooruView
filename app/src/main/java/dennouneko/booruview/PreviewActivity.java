@@ -31,9 +31,10 @@ public class PreviewActivity extends Activity
 		curServer = intent.getStringExtra(SERVER_URL);
 		try {
 			item = new JSONObject(intent.getStringExtra(ITEM_DETAILS));
-			fullImage = curServer + item.getString("large_file_url");
-			String tag_string = item.getString("tag_string");
-			tagsView.setText(tag_string);
+			fullImage = curServer + item.getString("file_url");
+			String tag_string_character = item.getString("tag_string_character");
+			String tag_string_copyright = item.getString("tag_string_copyright");
+			tagsView.setText(String.format("%s\n(%s)", tag_string_character, tag_string_copyright));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
