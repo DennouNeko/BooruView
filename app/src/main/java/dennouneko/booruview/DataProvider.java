@@ -83,6 +83,10 @@ public class DataProvider
 	}
 	
 	public void loadImage(final String src, final ImageView dest) {
+		loadImage(src, dest, true);
+	}
+	
+	public void loadImage(final String src, final ImageView dest, final boolean doCache) {
 		// TODO: make it cancellable?
 		
 		Bitmap cbmp = cache.get(src);
@@ -97,7 +101,9 @@ public class DataProvider
 			new DataCallback() {
 				public void onDataReady(Object in) {
 					Bitmap bmp = (Bitmap)in;
-					cache.put(src, bmp);
+					if(doCache) {
+						cache.put(src, bmp);
+					}
 					dest.setImageBitmap(bmp);
 				}
 
