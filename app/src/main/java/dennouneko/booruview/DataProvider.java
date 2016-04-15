@@ -36,15 +36,16 @@ public class DataProvider
 		return instance;
 	}
 	
-	public void get(String url, final DataHandler handler, final DataCallback callback) {
+	public AsyncTask<String, Void, Object> get(String url, final DataHandler handler, final DataCallback callback) {
 		AsyncTask<String, Void, Object> bg = new AsyncTask<String, Void, Object>() {
 			private static final String DEBUG_TAG = "DataProvider$query$AsyncTask";
 			private int responseCode = -1;
+			private HttpURLConnection conn = null;
 
 			protected Object doInBackground(String ... srcs) {
 				try {
 					URL src = new URL(srcs[0]);
-					HttpURLConnection conn = (HttpURLConnection)src.openConnection();
+					conn = (HttpURLConnection)src.openConnection();
 					conn.setReadTimeout(10000 /* milliseconds */);
 					conn.setConnectTimeout(15000 /* milliseconds */);
 					conn.setRequestMethod("GET");
@@ -58,6 +59,11 @@ public class DataProvider
 				catch(Exception e) {
 					e.printStackTrace();
 				}
+				finally {
+					if(conn != null) {
+						conn = null;
+					}
+				}
 				return null;
 			}
 
@@ -69,30 +75,39 @@ public class DataProvider
 					callback.onDataReady(in);
 				}
 			}
+			
+			protected void onCancelled() {
+				if(conn != null) {
+					conn.disconnect();
+				}
+				super.onCancelled();
+			}
 		};
 
 		bg.execute(url);
+		return bg;
 	}
 	
-	public void loadPage(String url, final DataCallback callback) {
-		get(url, new DataHandler() {
+	public AsyncTask<String, Void, Object> loadPage(String url, final DataCallback callback) {
+		AsyncTask<String, Void, Object> bg = get(url, new DataHandler() {
 			public Object process(InputStream in) {
 				return getAsString(in);
 			}
 		}, callback);
+		return bg;
 	}
 	
-	public void loadImage(final String src, final ImageView dest) {
-		loadImage(src, dest, true);
+	public AsyncTask<String, Void, Object> loadImage(final String src, final ImageView dest) {
+		AsyncTask<String, Void, Object> bg = loadImage(src, dest, true);
+		return bg;
 	}
 	
-	public void loadImage(final String src, final ImageView dest, final boolean doCache) {
-		// TODO: make it cancellable?
-		
+	public AsyncTask<String, Void, Object> loadImage(final String src, final ImageView dest, final boolean doCache) {
 		Bitmap cbmp = cache.get(src);
+		AsyncTask<String, Void, Object> bg = null;
 		if(cbmp == null) {
 			dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
-			get(src, new DataHandler() {
+			bg = get(src, new DataHandler() {
 				public Object process(InputStream in) {
 					Bitmap bmp = BitmapFactory.decodeStream(in);
 					return bmp;
@@ -116,6 +131,7 @@ public class DataProvider
 		{
 			dest.setImageBitmap(cbmp);
 		}
+		return bg;
 	}
 	
 	public void downloadFile(String src, String dst) {
