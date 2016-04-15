@@ -50,7 +50,7 @@ public class BooruViewActivity extends Activity
 		gridPrev.setAdapter(null);
 		gridNext.setAdapter(null);
 		
-		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DataProvider.DataCallback() {
+		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DownloadJob.DataCallback() {
 			public void onDataReady(Object in) {
 				String val = (String)in;
 				curLabel.setText(String.format("Page %d", pageNum));
