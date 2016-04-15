@@ -21,9 +21,14 @@ public class BooruViewActivity extends Activity
 	int pageNum = 1;
 	int viewNum = 0;
 	
+	DownloadJob runningJob = null;
+	
 	public String curServer = "http://safebooru.donmai.us";
 	
 	private void updateViewContent() {
+		if(runningJob != null) {
+			runningJob.cancel(true);
+		}
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
 		// TODO: update for any child count
 		final View cur = flipper.getCurrentView();
@@ -48,10 +53,12 @@ public class BooruViewActivity extends Activity
 		GridView gridNext = (GridView)next.findViewById(R.id.mainGridView);
 		
 		gridPrev.setAdapter(null);
+		grid.setAdapter(null);
 		gridNext.setAdapter(null);
 		
-		data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DownloadJob.DataCallback() {
+		runningJob = data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DownloadJob.DataCallback() {
 			public void onDataReady(Object in) {
+				runningJob = null;
 				String val = (String)in;
 				curLabel.setText(String.format("Page %d", pageNum));
 				try {
@@ -79,6 +86,7 @@ public class BooruViewActivity extends Activity
 			}
 			
 			public void onError(Object in, int code) {
+				runningJob = null;
 				curLabel.setText(String.format("Error: %d", code));
 			}
 		});
@@ -143,11 +151,11 @@ public class BooruViewActivity extends Activity
     }
 	
 	public void doPrevPage() {
-		if(pageNum <= 0) {
-			// TODO: check for new posts
-			// and update pageNum if necessary
+		if(pageNum <= 1) {
+			updateViewContent();
 		}
-		if(pageNum > 0) {
+		else
+		{
 			pageNum--;
 			Animation in = AnimationHelper.inFromLeftAnimation();
 			Animation out = AnimationHelper.outToRightAnimation();
@@ -156,18 +164,9 @@ public class BooruViewActivity extends Activity
 			flipper.setOutAnimation(out);
 			flipper.showPrevious();
 		}
-		else {
-			Toast.makeText(getApplicationContext(), "No new images.", Toast.LENGTH_SHORT).show();
-		}
 	}
 	
 	public void doNextPage() {
-		/* if(panelNum >= bufferedImageCount - 1) {
-		 // TODO: fetch new chunk of images,
-		 // try to sync if data shifted?
-		 // update panelNum if necessary
-		 }//*/
-		// if(panelNum < bufferedImageCount - 1) {
 		pageNum++;
 		Animation in = AnimationHelper.inFromRightAnimation();
 		Animation out = AnimationHelper.outToLeftAnimation();
@@ -175,7 +174,6 @@ public class BooruViewActivity extends Activity
 		flipper.setInAnimation(in);
 		flipper.setOutAnimation(out);
 		flipper.showNext();
-		//}
 	}
 	
 	@Override
