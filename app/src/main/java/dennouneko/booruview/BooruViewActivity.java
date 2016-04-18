@@ -22,12 +22,18 @@ public class BooruViewActivity extends Activity
 	int viewNum = 0;
 	
 	DownloadJob runningJob = null;
+	BooruAdapter curAdapter = null;
 	
 	public String curServer = "http://safebooru.donmai.us";
 	
 	private void updateViewContent() {
 		if(runningJob != null) {
 			runningJob.cancel(true);
+			runningJob = null;
+		}
+		if(curAdapter != null) {
+			curAdapter.abort();
+			curAdapter = null;
 		}
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
 		// TODO: update for any child count
@@ -63,7 +69,8 @@ public class BooruViewActivity extends Activity
 				curLabel.setText(String.format("Page %d", pageNum));
 				try {
 					final JSONArray pageData = new JSONArray(val);
-					grid.setAdapter(new BooruAdapter(BooruViewActivity.this, pageData));
+					curAdapter = new BooruAdapter(BooruViewActivity.this, pageData);
+					grid.setAdapter(curAdapter);
 					grid.setOnItemClickListener(new OnItemClickListener() {
 						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 							try {

@@ -46,11 +46,7 @@ public class DataProvider
 		return bg;
 	}
 	
-	public DownloadJob loadImage(final String src, final ImageView dest) {
-		return loadImage(src, dest, true);
-	}
-	
-	public DownloadJob loadImage(final String src, final ImageView dest, final boolean doCache) {
+	public DownloadJob loadImage(final String src, final ImageView dest, final boolean doCache, final DownloadJob.DataCallback callback) {
 		Bitmap cbmp = cache.get(src);
 		DownloadJob bg = null;
 		if(cbmp == null) {
@@ -68,10 +64,16 @@ public class DataProvider
 						cache.put(src, bmp);
 					}
 					dest.setImageBitmap(bmp);
+					if(callback != null) {
+						callback.onDataReady(in);
+					}
 				}
 
 				public void onError(InputStream in, int code) {
 					Toast.makeText(mCtx.getApplicationContext(), String.format("GET %d\n%s", code, src), Toast.LENGTH_LONG).show();
+					if(callback != null) {
+						callback.onError(in, code);
+					}
 				}
 			});
 			bg.execute(src);

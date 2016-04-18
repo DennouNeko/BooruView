@@ -56,7 +56,7 @@ public class PreviewActivity extends Activity
 	public void pullImage(String src) {
 		ImageView img = (ImageView)findViewById(R.id.previewImageView);
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
-		data.loadImage(src, img, false); // TODO: Make the preview caching an option
+		data.loadImage(src, img, false, null); // TODO: Make the preview caching an option
 	}
 
 	@Override
