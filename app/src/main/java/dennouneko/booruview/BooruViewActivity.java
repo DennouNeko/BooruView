@@ -14,6 +14,7 @@ import android.widget.AdapterView.*;
 
 public class BooruViewActivity extends Activity 
 {
+	private final Context context = this;
 	ViewFlipper flipper;
 	SwipeListener swipper;
 	float oldTouchValue;
@@ -46,13 +47,23 @@ public class BooruViewActivity extends Activity
 		View next = flipper.getChildAt(nextId);
 		View prev = flipper.getChildAt(prevId);
 		
+		String curLabelText = String.format("Loading page %d...", pageNum);
+		String curSearch = "";
+		
+		if(!searchTags.isEmpty()) {
+			curSearch = String.format("[%s]", searchTags);
+			curLabelText += "\n" + curSearch;
+		}
+		
+		final String curSearch2 = curSearch;
+		
 		// do the updates
 		TextView nextLabel = (TextView)next.findViewById(R.id.panelLabel);
 		final TextView curLabel  = (TextView)cur.findViewById(R.id.panelLabel);
 		TextView prevLabel = (TextView)prev.findViewById(R.id.panelLabel);
 		nextLabel.setText(String.format("Panel +1"));
 		//curLabel.setText(String.format("Page %d, Panel %d/%d", pageNum, curId + 1, cnt));
-		curLabel.setText(String.format("Loading page %d...", pageNum));
+		curLabel.setText(curLabelText);
 		prevLabel.setText(String.format("Panel -1"));
 		
 		GridView gridPrev = (GridView)prev.findViewById(R.id.mainGridView);
@@ -83,7 +94,11 @@ public class BooruViewActivity extends Activity
 			public void onDataReady(Object in) {
 				runningJob = null;
 				String val = (String)in;
-				curLabel.setText(String.format("Page %d", pageNum));
+				String label = String.format("Page %d", pageNum);
+				if(!curSearch2.isEmpty()) {
+					label += "\n" + curSearch2;
+				}
+				curLabel.setText(label);
 				try {
 					final JSONArray pageData = new JSONArray(val);
 					curAdapter = new BooruAdapter(BooruViewActivity.this, pageData);
@@ -207,6 +222,38 @@ public class BooruViewActivity extends Activity
 		inflater.inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	public void doSearch(String tags) {
+		searchTags = tags;
+		pageNum = 1;
+		updateViewContent();
+	}
+	
+	public void showSearchDialog() {
+		LayoutInflater li = LayoutInflater.from(context);
+		View alertLayout = li.inflate(R.layout.alert_text_prompt, null);
+		AlertDialog.Builder alert = new AlertDialog.Builder(BooruViewActivity.this);
+		alert.setView(alertLayout);
+		
+		final EditText alertValue = (EditText)alertLayout.findViewById(R.id.alertTextValue);
+		
+		alert
+			.setCancelable(false)
+			.setPositiveButton("Search...",
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					doSearch(alertValue.getText().toString());
+				}
+			})
+			.setNegativeButton("Cancel",
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+			
+			alert.create().show();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
@@ -217,10 +264,17 @@ public class BooruViewActivity extends Activity
 				data.clearCache();
 				String msg = getResources().getString(R.string.msgPurged);
 				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-				return true;
+				break;
+			case R.id.menuTagClear:
+				doSearch("");
+				break;
+			case R.id.menuSearchPost:
+				showSearchDialog();
+				break;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
+		return true;
 	}
 
 	@Override

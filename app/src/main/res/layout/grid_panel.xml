@@ -7,6 +7,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
+		android:gravity="center_horizontal"
 		android:maxLines="10"
 		android:scrollbars="vertical"/>
 	<GridView

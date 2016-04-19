@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+	android:padding="10dp"
+	>
+	
+	<TextView
+		android:text="Tags:"
+		android:id="@+id/alertTextPrompt"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		/>
+	
+	<EditText
+		android:id="@+id/alertTextValue"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		/>
+    
+</LinearLayout>
