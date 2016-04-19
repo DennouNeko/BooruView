@@ -76,7 +76,7 @@ public class BooruViewActivity extends Activity
 				}
 				b.append(t);
 			}
-			url.append(String.format("&search=%s", b.toString()));
+			url.append(String.format("&tags=%s", b.toString()));
 		}
 		
 		runningJob = data.loadPage(url.toString(), new DownloadJob.DataCallback() {
