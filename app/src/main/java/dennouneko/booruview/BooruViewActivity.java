@@ -236,6 +236,7 @@ public class BooruViewActivity extends Activity
 		alert.setView(alertLayout);
 		
 		final EditText alertValue = (EditText)alertLayout.findViewById(R.id.alertTextValue);
+		alertValue.setText(searchTags);
 		
 		alert
 			.setCancelable(false)
