@@ -23,6 +23,7 @@ public class BooruViewActivity extends Activity
 	
 	DownloadJob runningJob = null;
 	BooruAdapter curAdapter = null;
+	String searchTags = "";
 	
 	public String curServer = "http://safebooru.donmai.us";
 	
@@ -62,7 +63,23 @@ public class BooruViewActivity extends Activity
 		grid.setAdapter(null);
 		gridNext.setAdapter(null);
 		
-		runningJob = data.loadPage(curServer + String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum), new DownloadJob.DataCallback() {
+		StringBuilder url = new StringBuilder();
+		
+		url.append(curServer);
+		url.append(String.format("/posts.json?limit=%d&page=%d", postLimit, pageNum));
+		if(!searchTags.isEmpty()) {
+			String[] tags = searchTags.split(" ");
+			StringBuilder b = new StringBuilder();
+			for(String t : tags) {
+				if(b.length() > 0) {
+					b.append("+");
+				}
+				b.append(t);
+			}
+			url.append(String.format("&search=%s", b.toString()));
+		}
+		
+		runningJob = data.loadPage(url.toString(), new DownloadJob.DataCallback() {
 			public void onDataReady(Object in) {
 				runningJob = null;
 				String val = (String)in;
