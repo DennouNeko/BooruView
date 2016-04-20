@@ -3,6 +3,7 @@ import android.graphics.*;
 import java.io.*;
 import android.widget.*;
 import android.content.*;
+import android.os.*;
 
 public class ImageCache
 {
@@ -56,6 +57,21 @@ public class ImageCache
 		}
 	}
 	
+	public int getUsedSpace(String dirname) {
+		int tmp = 0;
+		File dir = new File(dirname);
+		for(File sub : dir.listFiles()) {
+			if(sub.isDirectory()) {
+				tmp += getUsedSpace(sub.getAbsolutePath());
+			}
+			else
+			{
+				tmp += sub.length();
+			}
+		}
+		return tmp;
+	}
+	
 	public void purge(String dirname) {
 		File dir = new File(dirname); 
 		String[] children = dir.list();
@@ -65,6 +81,14 @@ public class ImageCache
 			if(c.isDirectory()) purge(c.getAbsolutePath());
 			c.delete();
 		}
+	}
+	
+	public void tidy() {
+		(new AsyncTask<String, Void, Void>() {
+			protected Void doInBackground(String ... param) {
+				return null;
+			}
+		}).execute();
 	}
 	
 	private void mkdir(String path) {

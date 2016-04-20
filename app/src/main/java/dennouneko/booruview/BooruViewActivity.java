@@ -22,6 +22,8 @@ public class BooruViewActivity extends Activity
 	int pageNum = 1;
 	int viewNum = 0;
 	
+	static final String[] suff = {"B", "KB", "MB", "GB", "TB"};
+	
 	DownloadJob runningJob = null;
 	BooruAdapter curAdapter = null;
 	String searchTags = "";
@@ -255,13 +257,29 @@ public class BooruViewActivity extends Activity
 			
 			alert.create().show();
 	}
+	
+	public static String formatSize(int s) {
+		float s1 = (float)s;
+		int i = 0;
+		
+		while((s1 >= 1000) && (i < suff.length - 1)) {
+			i++;
+			s1 /= 1024.0f;
+		}
+		
+		return String.format("%.2f%s", s1, suff[i]);
+	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
+		DataProvider data = DataProvider.getInstance(getApplicationContext());
 		switch(item.getItemId()) {
+			case R.id.menuCacheInfo:
+				StringBuilder tmp = new StringBuilder();
+				tmp.append(String.format("Used: %s", formatSize(data.getCacheUsed())));
+				Toast.makeText(getApplicationContext(), tmp.toString(), Toast.LENGTH_LONG).show();
+				break;
 			case R.id.menuPurgeCache:
-				DataProvider data = DataProvider.getInstance(BooruViewActivity.this);
 				data.clearCache();
 				String msg = getResources().getString(R.string.msgPurged);
 				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();

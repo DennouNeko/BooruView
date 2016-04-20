@@ -29,6 +29,10 @@ public class DataProvider
 		cache.purge(cacheDir);
 	}
 	
+	public int getCacheUsed() {
+		return cache.getUsedSpace(cacheDir);
+	}
+	
 	static public DataProvider getInstance(Context appCtx) {
 		if(instance == null) {
 			instance = new DataProvider(appCtx);
