@@ -4,6 +4,8 @@
     <string name="app_name">BooruView</string>
 	
     <string name="menuSave">Save</string>
+	<string name="menuCopyPage">Copy page URL</string>
+	<string name="menuCopyImage">Copy image URL</string>
 	<string name="menuDetails">Details...</string>
 	<string name="msgSaving">Saving %s...</string>
 	

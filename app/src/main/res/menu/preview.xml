@@ -2,5 +2,7 @@
     
     <item android:id="@+id/menuSave" android:title="@string/menuSave" />
 	<item android:id="@+id/menuDetails" android:title="@string/menuDetails" />
+	<item android:id="@+id/menuCopyPage" android:title="@string/menuCopyPage" />
+	<item android:id="@+id/menuCopyImage" android:title="@string/menuCopyImage" />
     
 </menu>

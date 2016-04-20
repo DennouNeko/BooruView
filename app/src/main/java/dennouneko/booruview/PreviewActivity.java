@@ -78,7 +78,7 @@ public class PreviewActivity extends Activity
 				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 				DataProvider data = DataProvider.getInstance(getApplicationContext());
 				data.downloadFile(fullImage, null);
-				return true;
+				break;
 			case R.id.menuDetails:
 				try {
 					msg = item.getString("tag_string");
@@ -88,9 +88,43 @@ public class PreviewActivity extends Activity
 					e.printStackTrace();
 					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 				}
-				return true;
+				break;
+			case R.id.menuCopyPage:
+				try {
+					StringBuilder url = new StringBuilder();
+					url.append(curServer);
+					url.append("/posts/");
+					url.append(item.getString("id"));
+					ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipData clip = ClipData.newPlainText("url", url.toString());
+					clipboard.setPrimaryClip(clip);
+					msg = String.format("Copied \"%s\" to clipboard.", url.toString());
+					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+				}
+				break;
+			case R.id.menuCopyImage:
+				try {
+					StringBuilder url = new StringBuilder();
+					url.append(curServer);
+					url.append(item.getString("file_url"));
+					ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+					ClipData clip = ClipData.newPlainText("url", url.toString());
+					clipboard.setPrimaryClip(clip);
+					msg = String.format("Copied \"%s\" to clipboard.", url.toString());
+					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+				}
+				break;
 			default:
 				return super.onOptionsItemSelected(menuItem);
 		}
+		return true;
 	}
 }
