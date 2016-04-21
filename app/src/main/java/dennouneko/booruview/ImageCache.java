@@ -65,12 +65,13 @@ public class ImageCache
 	public ArrayList<FileInfo> indexFiles(String path) {
 		ArrayList<FileInfo> tmp = new ArrayList<FileInfo>();
 		indexFiles(path, tmp);
-		Collections.sort(tmp, new FileInfoComparator());
+		Collections.sort(tmp, new FileInfoComparator(false));
 		return tmp;
 	}
 	
 	private void indexFiles(String path, ArrayList<FileInfo> list) {
 		File dir = new File(path);
+		long now = System.currentTimeMillis();
 		if(dir.isDirectory()) {
 			for(File f : dir.listFiles()) {
 				indexFiles(f.getAbsolutePath(), list);
@@ -81,7 +82,7 @@ public class ImageCache
 			t.name = dir.getAbsolutePath();
 			t.size = dir.length();
 			t.time = dir.lastModified();
-			t.score = (float)t.time/(1000*60*60) + (float)t.size/(1024*1024);
+			t.score = (float)(now-t.time)/(1000*60*60) + (float)t.size/(1024*1024);
 			list.add(t);
 		}
 	}
@@ -147,13 +148,20 @@ public class ImageCache
 	}
 	
 	public class FileInfoComparator implements Comparator<FileInfo> {
+		boolean asc = true;
+		
+		public FileInfoComparator(boolean ascending) {
+			asc = ascending;
+		}
+		
 		@Override
 		public int compare(ImageCache.FileInfo p1, ImageCache.FileInfo p2) {
+			int ord = asc ? 1 : -1;
 			if(p1.score > p2.score) {
-				return 1;
+				return ord;
 			}
 			if(p1.score < p2.score) {
-				return -1;
+				return -ord;
 			}
 			return 0;
 		}
