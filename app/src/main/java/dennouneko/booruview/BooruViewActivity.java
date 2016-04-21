@@ -11,6 +11,7 @@ import android.content.*;
 import android.text.method.*;
 import org.json.*;
 import android.widget.AdapterView.*;
+import java.util.*;
 
 public class BooruViewActivity extends Activity 
 {
@@ -258,7 +259,7 @@ public class BooruViewActivity extends Activity
 			alert.create().show();
 	}
 	
-	public static String formatSize(int s) {
+	public static String formatSize(long s) {
 		float s1 = (float)s;
 		int i = 0;
 		
@@ -277,6 +278,21 @@ public class BooruViewActivity extends Activity
 			case R.id.menuCacheInfo:
 				StringBuilder tmp = new StringBuilder();
 				tmp.append(String.format("Used: %s", formatSize(data.getCacheUsed())));
+				try {
+					ArrayList<ImageCache.FileInfo> fi = data.indexCacheFiles();
+					int limit = fi.size();
+					// tmp.append(String.format("\n%d", limit));
+					if(limit > 5) {
+						limit = 5;
+					}
+					for(int i = 0; i < limit; i++) {
+						ImageCache.FileInfo fii = fi.get(i);
+						tmp.append(String.format("\n%.2f %s %s", fii.score, formatSize(fii.size), fii.name));
+					}
+				}
+				catch(Exception e) {
+					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+				}
 				Toast.makeText(getApplicationContext(), tmp.toString(), Toast.LENGTH_LONG).show();
 				break;
 			case R.id.menuPurgeCache:

@@ -4,6 +4,7 @@ import java.io.*;
 import android.widget.*;
 import android.content.*;
 import android.os.*;
+import java.util.*;
 
 public class ImageCache
 {
@@ -21,9 +22,13 @@ public class ImageCache
 		Bitmap bmp = null;
 		try {
 			String filename = url2path(url);
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-			bmp = BitmapFactory.decodeFile(filename, options);
+			File info = new File(filename);
+			if(info.exists()) {
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+				bmp = BitmapFactory.decodeFile(filename, options);
+				info.setLastModified(System.currentTimeMillis());
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +59,30 @@ public class ImageCache
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public ArrayList<FileInfo> indexFiles(String path) {
+		ArrayList<FileInfo> tmp = new ArrayList<FileInfo>();
+		indexFiles(path, tmp);
+		Collections.sort(tmp, new FileInfoComparator());
+		return tmp;
+	}
+	
+	private void indexFiles(String path, ArrayList<FileInfo> list) {
+		File dir = new File(path);
+		if(dir.isDirectory()) {
+			for(File f : dir.listFiles()) {
+				indexFiles(f.getAbsolutePath(), list);
+			}
+		}
+		else {
+			FileInfo t = new FileInfo();
+			t.name = dir.getAbsolutePath();
+			t.size = dir.length();
+			t.time = dir.lastModified();
+			t.score = (float)t.time/(1000*60*60) + (float)t.size/(1024*1024);
+			list.add(t);
 		}
 	}
 	
@@ -108,5 +137,25 @@ public class ImageCache
 		}
 		String tmp = mDir + "/" + url2;
 		return tmp;
+	}
+	
+	public class FileInfo {
+		String name;
+		long size;
+		long time;
+		float score;
+	}
+	
+	public class FileInfoComparator implements Comparator<FileInfo> {
+		@Override
+		public int compare(ImageCache.FileInfo p1, ImageCache.FileInfo p2) {
+			if(p1.score > p2.score) {
+				return 1;
+			}
+			if(p1.score < p2.score) {
+				return -1;
+			}
+			return 0;
+		}
 	}
 }

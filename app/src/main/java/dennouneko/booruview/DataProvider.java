@@ -33,6 +33,17 @@ public class DataProvider
 		return cache.getUsedSpace(cacheDir);
 	}
 	
+	public ArrayList<ImageCache.FileInfo> indexCacheFiles() {
+		ArrayList<ImageCache.FileInfo> ret = null;
+		try {
+			ret = cache.indexFiles(cacheDir);
+		}
+		catch(Exception e) {
+			Toast.makeText(mCtx, e.getMessage(), Toast.LENGTH_SHORT).show();
+		}
+		return ret;
+	}
+	
 	static public DataProvider getInstance(Context appCtx) {
 		if(instance == null) {
 			instance = new DataProvider(appCtx);
