@@ -41,6 +41,7 @@ public class BooruViewActivity extends Activity
 			curAdapter = null;
 		}
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
+		final ImageCache cache = data.cache;
 		// TODO: update for any child count
 		final View cur = flipper.getCurrentView();
 		final int curId = flipper.getDisplayedChild();
@@ -49,6 +50,8 @@ public class BooruViewActivity extends Activity
 		int prevId = curId - 1 < 0 ? cnt - 1 : curId - 1;
 		View next = flipper.getChildAt(nextId);
 		View prev = flipper.getChildAt(prevId);
+		
+		cache.tidy();
 		
 		String curLabelText = String.format("Loading page %d...", pageNum);
 		String curSearch = "";
@@ -287,7 +290,8 @@ public class BooruViewActivity extends Activity
 					}
 					for(int i = 0; i < limit; i++) {
 						ImageCache.FileInfo fii = fi.get(i);
-						tmp.append(String.format("\n%.2f %s %s", fii.score, formatSize(fii.size), fii.name));
+						File ff = new File(fii.name);
+						tmp.append(String.format("\n%.2f %s %s", fii.score, formatSize(fii.size), ff.getName()));
 					}
 				}
 				catch(Exception e) {

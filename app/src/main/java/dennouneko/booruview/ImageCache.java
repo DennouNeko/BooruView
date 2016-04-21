@@ -10,8 +10,9 @@ public class ImageCache
 {
 	String mDir;
 	Context mCtx;
+	boolean tidying = false;
 	
-	// TODO: add cache index and garbage collector
+	final long sizeLimit = 50 * 1024 * 1024;
 	
 	public ImageCache(Context ctx, String root_dir) {
 		mDir = root_dir;
@@ -114,11 +115,59 @@ public class ImageCache
 	}
 	
 	public void tidy() {
-		(new AsyncTask<String, Void, Void>() {
-			protected Void doInBackground(String ... param) {
-				return null;
+		if(tidying) return;
+		
+		tidying = true;
+		AsyncTask<String, Void, String> gc = new AsyncTask<String, Void, String>() {
+			protected String doInBackground(String ... param) {
+				ArrayList<FileInfo> files = null;
+				StringBuilder log = new StringBuilder();
+				log.append("Deleted:");
+				try {
+					files = indexFiles(mDir);
+					long size = 0;
+					for(int i = 0; i < files.size(); i++) {
+						FileInfo fi = files.get(i);
+						size += fi.size;
+					}
+					if(size > sizeLimit) {
+						long delsize = 0;
+						ArrayList<FileInfo> mark = new ArrayList<FileInfo>();
+						for(int i = 0; i < files.size(); i++) {
+							FileInfo fi = files.get(i);
+							mark.add(fi);
+							delsize += fi.size;
+							if(size - delsize < sizeLimit) break;
+						}
+						for(int i = 0; i < mark.size(); i++) {
+							try {
+								FileInfo fi = mark.get(i);
+								File f = new File(fi.name);
+								log.append("\n");
+								log.append(f.getName());
+								f.delete();
+							}
+							catch(Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+				finally {
+					tidying = false;
+				}
+				return log.toString();
 			}
-		}).execute();
+			
+			protected void onPostExecute(String msg) {
+				// Toast.makeText(mCtx, msg, Toast.LENGTH_LONG).show();
+			}
+		};
+		
+		gc.execute();
 	}
 	
 	private void mkdir(String path) {
