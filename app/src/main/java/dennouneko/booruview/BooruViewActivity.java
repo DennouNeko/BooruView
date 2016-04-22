@@ -12,6 +12,7 @@ import android.text.method.*;
 import org.json.*;
 import android.widget.AdapterView.*;
 import java.util.*;
+import android.content.res.*;
 
 public class BooruViewActivity extends Activity 
 {
@@ -194,6 +195,11 @@ public class BooruViewActivity extends Activity
 
 		updateViewContent();
     }
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+	}
 	
 	public void doPrevPage() {
 		if(pageNum <= 1) {

@@ -6,6 +6,7 @@ import android.widget.*;
 import android.view.*;
 import org.json.*;
 import android.text.method.*;
+import android.content.res.*;
 
 public class PreviewActivity extends Activity
 {
@@ -51,6 +52,11 @@ public class PreviewActivity extends Activity
 			e.printStackTrace();
 		}
 		pullImage(src);
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
 	}
 	
 	public void pullImage(String src) {
