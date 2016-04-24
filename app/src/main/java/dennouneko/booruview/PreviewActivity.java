@@ -7,6 +7,7 @@ import android.view.*;
 import org.json.*;
 import android.text.method.*;
 import android.content.res.*;
+import android.preference.*;
 
 public class PreviewActivity extends Activity
 {
@@ -60,9 +61,11 @@ public class PreviewActivity extends Activity
 	}
 	
 	public void pullImage(String src) {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		ImageView img = (ImageView)findViewById(R.id.previewImageView);
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
-		data.loadImage(src, img, false, null); // TODO: Make the preview caching an option
+		boolean doCache = pref.getBoolean(ConfigActivity.SETTING_CACHE_PREVIEW, false);
+		data.loadImage(src, img, doCache, null);
 	}
 
 	@Override

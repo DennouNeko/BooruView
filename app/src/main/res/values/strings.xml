@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">BooruView</string>
+	<string name="app_config_name">Settings</string>
 	
     <string name="menuSave">Save</string>
 	<string name="menuCopyPage">Copy page URL</string>
@@ -14,4 +15,9 @@
 	<string name="msgPurged">Cache has been purged.</string>
 	<string name="menuTagClear">Clear tag search</string>
 	<string name="menuSearchPost">Search posts...</string>
+	
+	<string name="menuPreferences">Settings...</string>
+	<string name="pref_cachePreview">Cache Previews</string>
+	<string name="pref_cachePreview_summ">Store the downloaded previews in cache.</string>
+	
 </resources>

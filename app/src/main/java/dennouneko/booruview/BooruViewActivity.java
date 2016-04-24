@@ -241,6 +241,11 @@ public class BooruViewActivity extends Activity
 		updateViewContent();
 	}
 	
+	public void doSettings() {
+		Intent config = new Intent(this, ConfigActivity.class);
+		startActivity(config);
+	}
+	
 	public void showSearchDialog() {
 		LayoutInflater li = LayoutInflater.from(context);
 		View alertLayout = li.inflate(R.layout.alert_text_prompt, null);
@@ -315,6 +320,9 @@ public class BooruViewActivity extends Activity
 				break;
 			case R.id.menuSearchPost:
 				showSearchDialog();
+				break;
+			case R.id.menuPreferences:
+				doSettings();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);

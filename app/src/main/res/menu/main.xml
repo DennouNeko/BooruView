@@ -4,6 +4,7 @@
     <item android:id="@+id/menuPurgeCache" android:title="@string/menuPurgeCache" />
 	<item android:id="@+id/menuTagClear" android:title="@string/menuTagClear" />
 	<item android:id="@+id/menuSearchPost" android:title="@string/menuSearchPost" />
+	<item android:id="@+id/menuPreferences" android:title="@string/menuPreferences" />
 	
 	<!--<item android:id="@+id/menuTagTest" android:title="TagTest" />-->
     
