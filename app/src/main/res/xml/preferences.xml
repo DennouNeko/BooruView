@@ -17,5 +17,9 @@
 			android:summaryOff="@string/pref_cachePreview_summOff"
 			android:defaultValue="false"
 			/>
+		<Preference
+			android:key="pref_purgeBtn"
+			android:title="@string/pref_purgeBtn"
+			/>
 	</PreferenceCategory>
 </PreferenceScreen>

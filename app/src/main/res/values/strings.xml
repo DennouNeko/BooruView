@@ -22,5 +22,6 @@
 	<string name="pref_cachePreview">Previews</string>
 	<string name="pref_cachePreview_summOn">Store all images in cache.</string>
 	<string name="pref_cachePreview_summOff">Store only the thumbnails.</string>
+	<string name="pref_purgeBtn">Clear Cache</string>
 	
 </resources>
