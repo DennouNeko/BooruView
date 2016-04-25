@@ -287,34 +287,7 @@ public class BooruViewActivity extends Activity
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		DataProvider data = DataProvider.getInstance(getApplicationContext());
 		switch(item.getItemId()) {
-			case R.id.menuCacheInfo:
-				StringBuilder tmp = new StringBuilder();
-				tmp.append(String.format("Used: %s", formatSize(data.getCacheUsed())));
-				try {
-					ArrayList<ImageCache.FileInfo> fi = data.indexCacheFiles();
-					int limit = fi.size();
-					// tmp.append(String.format("\n%d", limit));
-					if(limit > 5) {
-						limit = 5;
-					}
-					for(int i = 0; i < limit; i++) {
-						ImageCache.FileInfo fii = fi.get(i);
-						File ff = new File(fii.name);
-						tmp.append(String.format("\n%.2f %s %s", fii.score, formatSize(fii.size), ff.getName()));
-					}
-				}
-				catch(Exception e) {
-					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-				}
-				Toast.makeText(getApplicationContext(), tmp.toString(), Toast.LENGTH_LONG).show();
-				break;
-			case R.id.menuPurgeCache:
-				data.clearCache();
-				String msg = getResources().getString(R.string.msgPurged);
-				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-				break;
 			case R.id.menuTagClear:
 				doSearch("");
 				break;

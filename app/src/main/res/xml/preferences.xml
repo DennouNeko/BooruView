@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<CheckBoxPreference
-		android:key="pref_cachePreview"
-		android:title="@string/pref_cachePreview"
-		android:summary="@string/pref_cachePreview_summ"
-		android:defaultValue="false"
-		/>
+	<PreferenceCategory
+		android:title="@string/pgroup_cache"
+		>
+		<Preference
+			android:key="pref_cacheInfo"
+			android:title="@string/pref_cacheInfo"
+			android:summary=""
+			/>
+		<SwitchPreference
+			android:key="pref_cachePreview"
+			android:title="@string/pref_cachePreview"
+			android:switchTextOn="On"
+			android:switchTextOff="Off"
+			android:summaryOn="@string/pref_cachePreview_summOn"
+			android:summaryOff="@string/pref_cachePreview_summOff"
+			android:defaultValue="false"
+			/>
+	</PreferenceCategory>
 </PreferenceScreen>

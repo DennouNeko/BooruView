@@ -17,7 +17,10 @@
 	<string name="menuSearchPost">Search posts...</string>
 	
 	<string name="menuPreferences">Settings...</string>
-	<string name="pref_cachePreview">Cache Previews</string>
-	<string name="pref_cachePreview_summ">Store the downloaded previews in cache.</string>
+	<string name="pgroup_cache">Cache</string>
+	<string name="pref_cacheInfo">Info</string>
+	<string name="pref_cachePreview">Previews</string>
+	<string name="pref_cachePreview_summOn">Store all images in cache.</string>
+	<string name="pref_cachePreview_summOff">Store only the thumbnails.</string>
 	
 </resources>
