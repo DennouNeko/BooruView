@@ -29,7 +29,7 @@ public class ConfigActivity extends PreferenceActivity
 	private void updateCacheInfo() {
 		StringBuilder info = new StringBuilder();
 		ImageCache cache = DataProvider.getInstance(getApplicationContext()).cache;
-		info.append(String.format("Used: %s", BooruViewActivity.formatSize(cache.getUsedSpace(cache.mDir))));
+		info.append(String.format("Used: %s", Utils.formatSize(cache.getUsedSpace(cache.mDir))));
 		findPreference("pref_cacheInfo").setSummary(info.toString());
 	}
 }

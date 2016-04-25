@@ -24,8 +24,6 @@ public class BooruViewActivity extends Activity
 	int pageNum = 1;
 	int viewNum = 0;
 	
-	static final String[] suff = {"B", "KB", "MB", "GB", "TB"};
-	
 	DownloadJob runningJob = null;
 	BooruAdapter curAdapter = null;
 	String searchTags = "";
@@ -271,18 +269,6 @@ public class BooruViewActivity extends Activity
 			});
 			
 			alert.create().show();
-	}
-	
-	public static String formatSize(long s) {
-		float s1 = (float)s;
-		int i = 0;
-		
-		while((s1 >= 1000) && (i < suff.length - 1)) {
-			i++;
-			s1 /= 1024.0f;
-		}
-		
-		return String.format("%.2f%s", s1, suff[i]);
 	}
 
 	@Override
