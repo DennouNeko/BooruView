@@ -19,6 +19,7 @@ public class DownloadJob extends AsyncTask<String, Void, Object>
 	}
 
 	protected Object doInBackground(String ... srcs) {
+		String ecode = "";
 		try {
 			URL src = new URL(srcs[0]);
 			conn = (HttpURLConnection)src.openConnection();
@@ -33,14 +34,16 @@ public class DownloadJob extends AsyncTask<String, Void, Object>
 			return handler.process(conn.getInputStream());
 		}
 		catch(Exception e) {
+			responseCode = -2;
 			e.printStackTrace();
+			ecode = e.getMessage();
 		}
 		finally {
 			if(conn != null) {
 				conn = null;
 			}
 		}
-		return null;
+		return ecode;
 	}
 
 	protected void onPostExecute(Object in) {

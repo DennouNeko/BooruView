@@ -103,9 +103,11 @@ public class BooruViewActivity extends Activity
 				if(!curSearch2.isEmpty()) {
 					label += "\n" + curSearch2;
 				}
-				curLabel.setText(label);
 				try {
 					final JSONArray pageData = new JSONArray(val);
+					if(pageData.length() == 0) {
+						label += "\n<no posts>";
+					}
 					curAdapter = new BooruAdapter(BooruViewActivity.this, pageData);
 					grid.setAdapter(curAdapter);
 					grid.setOnItemClickListener(new OnItemClickListener() {
@@ -127,11 +129,13 @@ public class BooruViewActivity extends Activity
 				catch(Exception e) {
 					e.printStackTrace();
 				}
+				curLabel.setText(label);
 			}
 			
 			public void onError(Object in, int code) {
 				runningJob = null;
-				curLabel.setText(String.format("Error: %d", code));
+				String ecode = (String)in;
+				curLabel.setText(String.format("Error: %d\n%s", code, ecode));
 			}
 		});
 	}

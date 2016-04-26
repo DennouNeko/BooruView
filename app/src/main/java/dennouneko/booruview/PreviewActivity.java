@@ -65,7 +65,12 @@ public class PreviewActivity extends Activity
 		ImageView img = (ImageView)findViewById(R.id.previewImageView);
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
 		boolean doCache = pref.getBoolean(ConfigActivity.SETTING_CACHE_PREVIEW, false);
-		data.loadImage(src, img, doCache, null);
+		data.loadImage(src, img, doCache, new DownloadJob.DataCallback() {
+			public void onError(Object in, int code) {
+				String ecode = (String)in;
+				Toast.makeText(getApplicationContext(), ecode, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	@Override
