@@ -1,5 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	
+	<item android:id="@+id/menuGoToPage" android:title="@string/menuGoToPage" />
 	<item android:id="@+id/menuTagClear" android:title="@string/menuTagClear" />
 	<item android:id="@+id/menuSearchPost" android:title="@string/menuSearchPost" />
 	<item android:id="@+id/menuPreferences" android:title="@string/menuPreferences" />

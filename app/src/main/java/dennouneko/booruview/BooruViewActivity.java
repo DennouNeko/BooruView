@@ -272,6 +272,79 @@ public class BooruViewActivity extends Activity
 			
 			alert.create().show();
 	}
+	
+	public void showPageDialog() {
+		LayoutInflater li = LayoutInflater.from(context);
+		View alertLayout = li.inflate(R.layout.alert_number_prompt, null);
+		AlertDialog.Builder alert = new AlertDialog.Builder(BooruViewActivity.this);
+		TextView textPrompt = (TextView)alertLayout.findViewById(R.id.alertTextPrompt);
+		textPrompt.setText(R.string.alertTagSearch);
+		alert.setView(alertLayout);
+		
+		final NumberPicker n1 = (NumberPicker)alertLayout.findViewById(R.id.alertNumber1);
+		final NumberPicker n2 = (NumberPicker)alertLayout.findViewById(R.id.alertNumber2);
+		
+		n1.setMinValue(0);
+		n1.setMaxValue(9999);
+		n2.setMinValue(0);
+		n2.setMaxValue(99);
+		n2.setFormatter(new NumberPicker.Formatter(){
+			public String format(int val) {
+				return String.format("%02d", val);
+			}
+		});
+		
+		int nv1 = pageNum / 100;
+		int nv2 = pageNum % 100;
+		n1.setValue(nv1);
+		n2.setValue(nv2);
+		
+		NumberPicker.OnValueChangeListener limiter = new NumberPicker.OnValueChangeListener() {
+			@Override
+			public void onValueChange(NumberPicker np, int oldval, int newval) {
+				int range = n2.getMaxValue() - n2.getMinValue() + 1;
+				int halfrange = (n2.getMaxValue() + n2.getMinValue());
+				int diff = newval - oldval;
+				if(diff > range/2) diff -= range;
+				if(diff < -range/2) diff += range;
+				int v1 = n1.getValue();
+				int v2 = n2.getValue();
+				if(np == n2) {
+					if(diff > 0 && (newval - diff) < 0 && newval >= 0) {
+						v1++;
+						n1.setValue(v1);
+					}
+					else if(diff < 0 && oldval >= 0 && (oldval + diff) < 0) {
+						v1--;
+						n1.setValue(v1);
+					}
+				}
+			}
+		};
+		
+		n1.setOnValueChangedListener(limiter);
+		n2.setOnValueChangedListener(limiter);
+		
+		limiter.onValueChange(n2, nv2, nv2);
+		
+		alert
+			.setCancelable(false)
+			.setPositiveButton("Go",
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					pageNum = n1.getValue() * 100 + n2.getValue();
+					updateViewContent();
+				}
+			})
+			.setNegativeButton("Cancel",
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+		
+		alert.create().show();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -281,6 +354,9 @@ public class BooruViewActivity extends Activity
 				break;
 			case R.id.menuSearchPost:
 				showSearchDialog();
+				break;
+			case R.id.menuGoToPage:
+				showPageDialog();
 				break;
 			case R.id.menuPreferences:
 				doSettings();
