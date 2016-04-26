@@ -19,7 +19,7 @@ public class DownloadJob extends AsyncTask<String, Void, Object>
 	}
 
 	protected Object doInBackground(String ... srcs) {
-		String ecode = "";
+		Object ecode = "";
 		try {
 			URL src = new URL(srcs[0]);
 			conn = (HttpURLConnection)src.openConnection();
@@ -31,7 +31,7 @@ public class DownloadJob extends AsyncTask<String, Void, Object>
 			conn.connect();
 			responseCode = conn.getResponseCode();
 			Log.d(DEBUG_TAG, "The response is: " + responseCode);
-			return handler.process(conn.getInputStream());
+			ecode = handler.process(conn.getInputStream());
 		}
 		catch(Exception e) {
 			responseCode = -2;
