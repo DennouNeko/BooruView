@@ -337,6 +337,7 @@ public class BooruViewActivity extends Activity
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					pageNum = n1.getValue() * 100 + n2.getValue();
+					if(pageNum < 1) pageNum = 1;
 					updateViewContent();
 				}
 			})
