@@ -10,6 +10,8 @@
 	<string name="menuDetails">Details...</string>
 	<string name="msgSaving">Saving %s...</string>
 	
+	<string name="alertTagSearch">Tags:</string>
+	
 	<string name="menuCacheInfo">Cache info</string>
 	<string name="menuPurgeCache">Clear Cache</string>
 	<string name="msgPurged">Cache has been purged.</string>

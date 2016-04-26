@@ -248,6 +248,8 @@ public class BooruViewActivity extends Activity
 		LayoutInflater li = LayoutInflater.from(context);
 		View alertLayout = li.inflate(R.layout.alert_text_prompt, null);
 		AlertDialog.Builder alert = new AlertDialog.Builder(BooruViewActivity.this);
+		TextView textPrompt = (TextView)alertLayout.findViewById(R.id.alertTextPrompt);
+		textPrompt.setText(R.string.alertTagSearch);
 		alert.setView(alertLayout);
 		
 		final EditText alertValue = (EditText)alertLayout.findViewById(R.id.alertTextValue);
