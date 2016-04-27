@@ -282,7 +282,7 @@ public class BooruViewActivity extends Activity
 		View alertLayout = li.inflate(R.layout.alert_number_prompt, null);
 		AlertDialog.Builder alert = new AlertDialog.Builder(BooruViewActivity.this);
 		TextView textPrompt = (TextView)alertLayout.findViewById(R.id.alertTextPrompt);
-		textPrompt.setText(R.string.alertTagSearch);
+		textPrompt.setText(R.string.alertJumpPage);
 		alert.setView(alertLayout);
 		
 		final NumberPicker n1 = (NumberPicker)alertLayout.findViewById(R.id.alertNumber1);
