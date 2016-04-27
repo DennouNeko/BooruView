@@ -8,7 +8,7 @@ import java.util.*;
 
 public class ImageCache
 {
-	String mDir;
+	String mDir, mDataDir;
 	Context mCtx;
 	boolean tidying = false;
 	
@@ -16,6 +16,7 @@ public class ImageCache
 	
 	public ImageCache(Context ctx, String root_dir) {
 		mDir = root_dir;
+		mDataDir = mDir + "/imagecache";
 		mCtx = ctx;
 	}
 	
@@ -103,6 +104,10 @@ public class ImageCache
 		return tmp;
 	}
 	
+	public void cleanup() {
+		purge(mDataDir);
+	}
+	
 	public void purge(String dirname) {
 		File dir = new File(dirname); 
 		String[] children = dir.list();
@@ -124,7 +129,7 @@ public class ImageCache
 				StringBuilder log = new StringBuilder();
 				log.append("Deleted:");
 				try {
-					files = indexFiles(mDir);
+					files = indexFiles(mDataDir);
 					long size = 0;
 					for(int i = 0; i < files.size(); i++) {
 						FileInfo fi = files.get(i);
@@ -185,7 +190,7 @@ public class ImageCache
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		String tmp = mDir + "/" + url2;
+		String tmp = mDataDir + "/" + url2;
 		return tmp;
 	}
 	
