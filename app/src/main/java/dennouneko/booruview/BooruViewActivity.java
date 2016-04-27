@@ -250,7 +250,7 @@ public class BooruViewActivity extends Activity
 	
 	public void showSearchDialog() {
 		LayoutInflater li = LayoutInflater.from(context);
-		View alertLayout = li.inflate(R.layout.alert_text_prompt, null);
+		View alertLayout = li.inflate(R.layout.alert_search, null);
 		AlertDialog.Builder alert = new AlertDialog.Builder(BooruViewActivity.this);
 		TextView textPrompt = (TextView)alertLayout.findViewById(R.id.alertTextPrompt);
 		textPrompt.setText(R.string.alertTagSearch);
@@ -279,7 +279,7 @@ public class BooruViewActivity extends Activity
 	
 	public void showPageDialog() {
 		LayoutInflater li = LayoutInflater.from(context);
-		View alertLayout = li.inflate(R.layout.alert_number_prompt, null);
+		View alertLayout = li.inflate(R.layout.alert_page_jump, null);
 		AlertDialog.Builder alert = new AlertDialog.Builder(BooruViewActivity.this);
 		TextView textPrompt = (TextView)alertLayout.findViewById(R.id.alertTextPrompt);
 		textPrompt.setText(R.string.alertJumpPage);
