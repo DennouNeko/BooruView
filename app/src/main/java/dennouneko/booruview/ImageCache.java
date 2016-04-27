@@ -5,6 +5,7 @@ import android.widget.*;
 import android.content.*;
 import android.os.*;
 import java.util.*;
+import android.preference.*;
 
 public class ImageCache
 {
@@ -12,7 +13,7 @@ public class ImageCache
 	Context mCtx;
 	boolean tidying = false;
 	
-	final long sizeLimit = 50 * 1024 * 1024;
+	public static final int defaultSizeLimit = 50 * 1024 * 1024;
 	
 	public ImageCache(Context ctx, String root_dir) {
 		mDir = root_dir;
@@ -135,6 +136,7 @@ public class ImageCache
 						FileInfo fi = files.get(i);
 						size += fi.size;
 					}
+					int sizeLimit = PreferenceManager.getDefaultSharedPreferences(mCtx).getInt(ConfigActivity.PREF_CACHE_SIZE, defaultSizeLimit);
 					if(size > sizeLimit) {
 						long delsize = 0;
 						ArrayList<FileInfo> mark = new ArrayList<FileInfo>();

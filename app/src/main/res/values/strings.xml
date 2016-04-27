@@ -22,6 +22,7 @@
 	<string name="menuPreferences">Settings...</string>
 	<string name="pgroup_cache">Cache</string>
 	<string name="pref_cacheInfo">Info</string>
+	<string name="pref_cacheSize">Size limit</string>
 	<string name="pref_cachePreview">Previews</string>
 	<string name="pref_cachePreview_summOn">Store all images in cache.</string>
 	<string name="pref_cachePreview_summOff">Store only the thumbnails.</string>

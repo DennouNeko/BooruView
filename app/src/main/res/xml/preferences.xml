@@ -8,6 +8,11 @@
 			android:title="@string/pref_cacheInfo"
 			android:summary=""
 			/>
+		<Preference
+			android:key="pref_cacheSizeBtn"
+			android:title="@string/pref_cacheSize"
+			android:summary=""
+			/>
 		<SwitchPreference
 			android:key="pref_cachePreview"
 			android:title="@string/pref_cachePreview"

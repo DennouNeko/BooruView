@@ -68,7 +68,7 @@ public class PreviewActivity extends Activity
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		ImageView img = (ImageView)findViewById(R.id.previewImageView);
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
-		boolean doCache = pref.getBoolean(ConfigActivity.SETTING_CACHE_PREVIEW, false);
+		boolean doCache = pref.getBoolean(ConfigActivity.PREF_CACHE_PREVIEW, false);
 		data.loadImage(src, img, doCache, new DownloadJob.DataCallback() {
 			public void onError(Object in, int code) {
 				String ecode = (String)in;

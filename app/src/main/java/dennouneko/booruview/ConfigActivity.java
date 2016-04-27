@@ -2,10 +2,13 @@ package dennouneko.booruview;
 import android.os.*;
 import android.preference.*;
 import android.widget.*;
+import android.content.*;
 
 public class ConfigActivity extends PreferenceActivity
 {
-	static final String SETTING_CACHE_PREVIEW = "pref_cachePreview";
+	public static final String PREF_CACHE_PREVIEW = "pref_cachePreview";
+	public static final String PREF_CACHE_SIZE = "pref_cacheSize";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -22,14 +25,24 @@ public class ConfigActivity extends PreferenceActivity
 				return true;
 			}
 		});
+		findPreference("pref_cacheSizeBtn").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference p1) {
+				Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
+				return true;
+			}
+		});
 		
 		updateCacheInfo();
 	}
 	
 	private void updateCacheInfo() {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		StringBuilder info = new StringBuilder();
 		ImageCache cache = DataProvider.getInstance(getApplicationContext()).cache;
 		info.append(String.format("Used: %s", Utils.formatSize(cache.getUsedSpace(cache.mDir))));
 		findPreference("pref_cacheInfo").setSummary(info.toString());
+		int cacheSize = pref.getInt(PREF_CACHE_SIZE, ImageCache.defaultSizeLimit);
+		findPreference("pref_cacheSizeBtn").setSummary(Utils.formatSize(cacheSize));
 	}
 }
