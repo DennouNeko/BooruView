@@ -341,6 +341,13 @@ public class BooruViewActivity extends Activity
 					updateViewContent();
 				}
 			})
+			.setNeutralButton("Page 1",
+			new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					pageNum = 1;
+					updateViewContent();
+				}
+			})
 			.setNegativeButton("Cancel",
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
