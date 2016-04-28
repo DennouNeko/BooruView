@@ -261,7 +261,7 @@ public class BooruViewActivity extends Activity
 		
 		alert
 			.setCancelable(false)
-			.setPositiveButton("Search...",
+			.setPositiveButton("Search",
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					doSearch(alertValue.getText().toString());
@@ -307,7 +307,7 @@ public class BooruViewActivity extends Activity
 			@Override
 			public void onValueChange(NumberPicker np, int oldval, int newval) {
 				int range = n2.getMaxValue() - n2.getMinValue() + 1;
-				int halfrange = (n2.getMaxValue() + n2.getMinValue());
+				int halfrange = (n2.getMaxValue() + n2.getMinValue()) / 2;
 				int diff = newval - oldval;
 				if(diff > range/2) diff -= range;
 				if(diff < -range/2) diff += range;
