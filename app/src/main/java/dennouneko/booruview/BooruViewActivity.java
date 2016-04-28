@@ -13,6 +13,7 @@ import org.json.*;
 import android.widget.AdapterView.*;
 import java.util.*;
 import android.content.res.*;
+import android.preference.*;
 
 public class BooruViewActivity extends Activity 
 {
@@ -28,8 +29,6 @@ public class BooruViewActivity extends Activity
 	BooruAdapter curAdapter = null;
 	String searchTags = "";
 	
-	public String curServer = "http://safebooru.donmai.us";
-	
 	private void updateViewContent() {
 		if(runningJob != null) {
 			runningJob.cancel(true);
@@ -39,6 +38,17 @@ public class BooruViewActivity extends Activity
 			curAdapter.abort();
 			curAdapter = null;
 		}
+		
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		String cs = pref.getString(ConfigActivity.PREF_SERVER, "");
+		if(cs.isEmpty()) {
+			//Toast.makeText(getApplicationContext(), "Please select server first.", Toast.LENGTH_LONG).show();
+			//return;
+			cs = "http://safebooru.donmai.us";
+		}
+		final String curServer = cs;
+		
 		final DataProvider data = DataProvider.getInstance(getApplicationContext());
 		final ImageCache cache = data.cache;
 		// TODO: update for any child count
@@ -108,7 +118,7 @@ public class BooruViewActivity extends Activity
 					if(pageData.length() == 0) {
 						label += "\n<no posts>";
 					}
-					curAdapter = new BooruAdapter(BooruViewActivity.this, pageData);
+					curAdapter = new BooruAdapter(BooruViewActivity.this, pageData, curServer);
 					grid.setAdapter(curAdapter);
 					grid.setOnItemClickListener(new OnItemClickListener() {
 						public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -357,6 +367,10 @@ public class BooruViewActivity extends Activity
 		
 		alert.create().show();
 	}
+	
+	public void doServerSettings() {
+		Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -372,6 +386,9 @@ public class BooruViewActivity extends Activity
 				break;
 			case R.id.menuPreferences:
 				doSettings();
+				break;
+			case R.id.menuServer:
+				doServerSettings();
 				break;
 			default:
 				return super.onOptionsItemSelected(item);

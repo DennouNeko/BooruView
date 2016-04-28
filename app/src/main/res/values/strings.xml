@@ -13,12 +13,13 @@
 	<string name="alertTagSearch">Tags:</string>
 	<string name="alertJumpPage">Jump to page:</string>
 	
-	<string name="menuCacheInfo">Cache info</string>
-	<string name="menuPurgeCache">Clear Cache</string>
+	<!--<string name="menuCacheInfo">Cache info</string>
+	<string name="menuPurgeCache">Clear Cache</string>-->
 	<string name="msgPurged">Cache has been purged.</string>
 	<string name="menuTagClear">Clear tag search</string>
 	<string name="menuSearchPost">Search posts...</string>
 	<string name="menuGoToPage">Jump to page...</string>
+	<string name="menuServer">Servers...</string>
 	
 	<string name="menuPreferences">Settings...</string>
 	<string name="pgroup_cache">Cache</string>

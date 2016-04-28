@@ -7,13 +7,15 @@ import android.view.*;
 public class BooruAdapter extends BaseAdapter
 {
 	private Context mCtx;
+	String curServer;
 	JSONArray imgArray;
 	int gridSize = 100;
 	DownloadJob[] jobs = null;
 	
-	public BooruAdapter(Context ctx, JSONArray data) {
+	public BooruAdapter(Context ctx, JSONArray data, String server) {
 		mCtx = ctx;
 		imgArray = data;
+		curServer = server;
 		jobs = new DownloadJob[data.length()];
 	}
 	
@@ -55,7 +57,7 @@ public class BooruAdapter extends BaseAdapter
 		try {
 			DataProvider data = DataProvider.getInstance(mCtx.getApplicationContext());
 			JSONObject item = (JSONObject)getItem(position);
-			jobs[position] = data.loadImage(((BooruViewActivity)mCtx).curServer + item.getString("preview_file_url"), ret, true,
+			jobs[position] = data.loadImage(curServer + item.getString("preview_file_url"), ret, true,
 			new DownloadJob.DataCallback() {
 				public void onDataReady(Object in) {
 					jobs[position] = null;
