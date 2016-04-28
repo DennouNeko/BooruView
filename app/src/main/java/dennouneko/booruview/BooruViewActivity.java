@@ -17,6 +17,8 @@ import android.preference.*;
 
 public class BooruViewActivity extends Activity 
 {
+	public static final int REQUEST_SERVER = 1;
+	
 	private final Context context = this;
 	ViewFlipper flipper;
 	SwipeListener swipper;
@@ -370,7 +372,19 @@ public class BooruViewActivity extends Activity
 	}
 	
 	public void doServerSettings() {
-		Toast.makeText(getApplicationContext(), "TODO", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(this, ServerEditActivity.class);
+		startActivityForResult(intent, REQUEST_SERVER);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent resultData)
+	{
+		switch(requestCode) {
+		case REQUEST_SERVER:
+			Toast.makeText(getApplicationContext(), String.format("Server result: %d", resultCode), Toast.LENGTH_LONG).show();
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, resultData);
 	}
 
 	@Override

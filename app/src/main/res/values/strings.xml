@@ -3,6 +3,7 @@
 
     <string name="app_name">BooruView</string>
 	<string name="app_config_name">Settings</string>
+	<string name="app_serverEdit_name">Settings</string>
 	
     <string name="menuSave">Save</string>
 	<string name="menuCopyPage">Copy page URL</string>
