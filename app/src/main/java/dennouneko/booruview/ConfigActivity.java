@@ -9,6 +9,7 @@ public class ConfigActivity extends PreferenceActivity
 	public static final String PREF_CACHE_PREVIEW = "pref_cachePreview";
 	public static final String PREF_CACHE_SIZE = "pref_cacheSize";
 	public static final String PREF_SERVER = "pref_currentServer";
+	public static final String PREF_POST_LIMIT = "pref_postLimit";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

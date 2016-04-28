@@ -21,7 +21,7 @@ public class BooruViewActivity extends Activity
 	ViewFlipper flipper;
 	SwipeListener swipper;
 	float oldTouchValue;
-	int postLimit = 15;
+	// int postLimit = 15;
 	int pageNum = 1;
 	int viewNum = 0;
 	
@@ -41,6 +41,7 @@ public class BooruViewActivity extends Activity
 		
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		int postLimit = pref.getInt(ConfigActivity.PREF_POST_LIMIT, 15);
 		String cs = pref.getString(ConfigActivity.PREF_SERVER, "");
 		if(cs.isEmpty()) {
 			//Toast.makeText(getApplicationContext(), "Please select server first.", Toast.LENGTH_LONG).show();
