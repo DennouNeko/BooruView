@@ -118,6 +118,11 @@ public class BooruViewActivity extends Activity
 				}
 				try {
 					final JSONArray pageData = new JSONArray(val);
+					
+					if(pageData == null)
+					{
+						label += "\n<request error>\n" + val;
+					}
 					if(pageData.length() == 0) {
 						label += "\n<no posts>";
 					}
@@ -148,7 +153,29 @@ public class BooruViewActivity extends Activity
 			public void onError(Object in, int code) {
 				runningJob = null;
 				String ecode = (String)in;
-				curLabel.setText(String.format("Error: %d\n%s", code, ecode));
+				boolean handled = false;
+				try {
+					final JSONObject reqStatus = new JSONObject(ecode);
+
+					if(reqStatus != null)
+					{
+						String statName = "success";
+						if(reqStatus.has(statName) && !reqStatus.getBoolean(statName))
+						{
+							String msg = reqStatus.getString("message");
+							curLabel.setText("Request failed:\n" + msg);
+							handled = true;
+						}
+					}
+				}
+				catch (JSONException e1)
+				{
+					e1.printStackTrace();
+				}
+				if(!handled)
+				{
+					curLabel.setText(String.format("Error: %d\n%s", code, ecode));
+				}
 			}
 		});
 	}

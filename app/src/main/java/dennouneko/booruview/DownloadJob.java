@@ -31,12 +31,20 @@ public class DownloadJob extends AsyncTask<String, Void, Object>
 			conn.connect();
 			responseCode = conn.getResponseCode();
 			Log.d(DEBUG_TAG, "The response is: " + responseCode);
-			ecode = handler.process(conn.getInputStream());
+			if(responseCode >= 400 && responseCode <= 599)
+			{
+				ecode = handler.process(conn.getErrorStream());
+			}
+			else
+			{
+				ecode = handler.process(conn.getInputStream());
+			}
 		}
-		catch(Exception e) {
+		catch(Exception e)
+		{
 			responseCode = -2;
 			e.printStackTrace();
-			ecode = e.getMessage();
+			ecode = Log.getStackTraceString(e) + "\n" + e.getMessage();
 		}
 		finally {
 			if(conn != null) {
