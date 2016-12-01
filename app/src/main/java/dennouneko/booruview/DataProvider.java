@@ -65,27 +65,40 @@ public class DataProvider
 		Bitmap cbmp = cache.get(src);
 		DownloadJob bg = null;
 		if(cbmp == null) {
-			dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.ic_launcher));
+			dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.loading));
 			bg = new DownloadJob(new DownloadJob.DataHandler() {
 				public Object process(InputStream in) {
-					Bitmap bmp = BitmapFactory.decodeStream(in);
-					return bmp;
+					try {
+						Bitmap bmp = BitmapFactory.decodeStream(in);
+						return bmp;
+					}
+					catch(Exception e)
+					{
+						return null;
+					}
 				}
 			},
 			new DownloadJob.DataCallback() {
 				public void onDataReady(Object in) {
 					Bitmap bmp = (Bitmap)in;
-					if(doCache) {
-						cache.put(src, bmp);
+					if(bmp != null) {
+						if(doCache) {
+							cache.put(src, bmp);
+						}
+						dest.setImageBitmap(bmp);
+						if(callback != null) {
+							callback.onDataReady(in);
+						}
 					}
-					dest.setImageBitmap(bmp);
-					if(callback != null) {
-						callback.onDataReady(in);
+					else
+					{
+						dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.file_error));
 					}
 				}
 
 				public void onError(InputStream in, int code) {
 					Toast.makeText(mCtx.getApplicationContext(), String.format("GET %d\n%s", code, src), Toast.LENGTH_LONG).show();
+					dest.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.file_error));
 					if(callback != null) {
 						callback.onError(in, code);
 					}
