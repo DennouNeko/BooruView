@@ -57,15 +57,21 @@ public class BooruAdapter extends BaseAdapter
 		try {
 			DataProvider data = DataProvider.getInstance(mCtx.getApplicationContext());
 			JSONObject item = (JSONObject)getItem(position);
-			jobs[position] = data.loadImage(curServer + item.getString("preview_file_url"), ret, true,
-			new DownloadJob.DataCallback() {
-				public void onDataReady(Object in) {
-					jobs[position] = null;
-				}
-				public void onError(Object in, int code) {
-					jobs[position] = null;
-				}
-			});
+			if(item.has("preview_file_url")) {
+				jobs[position] = data.loadImage(curServer + item.getString("preview_file_url"), ret, true,
+				new DownloadJob.DataCallback() {
+					public void onDataReady(Object in) {
+						jobs[position] = null;
+					}
+					public void onError(Object in, int code) {
+						jobs[position] = null;
+					}
+				});
+			}
+			else
+			{
+				ret.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.question));
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
