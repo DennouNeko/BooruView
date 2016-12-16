@@ -6,6 +6,7 @@
 	
 	<ListView
 		android:id="@+id/imageDetailsTagList"
+		android:fadeScrollbars="false"
 		android:scrollbars="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="200dp"
