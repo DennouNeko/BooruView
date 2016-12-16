@@ -8,6 +8,10 @@ import org.json.*;
 import android.text.method.*;
 import android.content.res.*;
 import android.preference.*;
+import android.database.*;
+import java.util.*;
+import android.widget.AdapterView.*;
+import android.util.*;
 
 public class PreviewActivity extends Activity
 {
@@ -18,11 +22,15 @@ public class PreviewActivity extends Activity
 	String fullImage;
 	String curServer;
 	JSONObject item;
+	ArrayAdapter<String> adapter;
+	ArrayList<String> tags;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
+		
+		tags = new ArrayList<String>();
 		
 		RelativeLayout viewHost = (RelativeLayout)findViewById(R.id.previewHost);
 		TextView tagsView = (TextView)viewHost.findViewById(R.id.previewTags);
@@ -37,24 +45,37 @@ public class PreviewActivity extends Activity
 			String tag_string_character = item.getString("tag_string_character");
 			String tag_string_copyright = item.getString("tag_string_copyright");
 			String tag_string_artist = item.getString("tag_string_artist");
+			String tag_string_general = item.getString("tag_string_general");
 			StringBuilder tagbox = new StringBuilder();
 			if(!tag_string_character.isEmpty()) {
+				for(String s : tag_string_character.split(" "))
+					tags.add(s);
 				tagbox.append(tag_string_character);
 			}
 			if(!tag_string_copyright.isEmpty()) {
+				for(String s : tag_string_copyright.split(" "))
+					tags.add(s);
 				tag_string_copyright = "(" + tag_string_copyright + ")";
 				if(tagbox.length() > 0) tagbox.append("\n");
 				tagbox.append(tag_string_copyright);
 			}
 			if(!tag_string_artist.isEmpty()) {
+				for(String s : tag_string_artist.split(" "))
+					tags.add(s);
 				tag_string_artist = "by " + tag_string_artist;
 				if(tagbox.length() > 0) tagbox.append("\n");
 				tagbox.append(tag_string_artist);
+			}
+			if(!tag_string_general.isEmpty())
+			{
+				for(String s : tag_string_general.split(" "))
+					tags.add(s);
 			}
 			tagsView.setText(tagbox);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			Toast.makeText(getApplicationContext(), Log.getStackTraceString(e), Toast.LENGTH_LONG).show();
 		}
 		pullImage(src);
 	}
@@ -99,8 +120,7 @@ public class PreviewActivity extends Activity
 				break;
 			case R.id.menuDetails:
 				try {
-					msg = item.getString("tag_string");
-					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+					showDetails();
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -144,5 +164,41 @@ public class PreviewActivity extends Activity
 				return super.onOptionsItemSelected(menuItem);
 		}
 		return true;
+	}
+	
+	private void showDetails()
+	{
+		//msg = item.getString("tag_string");
+		//Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+		Dialog dlg = new Dialog(this);
+		dlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dlg.setContentView(R.layout.image_details);
+		dlg.setCancelable(true);
+		
+		ListView taglist = (ListView)dlg.findViewById(R.id.imageDetailsTagList);
+		if(taglist != null) {
+			if(adapter == null)
+			{
+				adapter = new ArrayAdapter<String>(dlg.getContext(), R.layout.image_details_item, R.id.imageItemTagLabel, tags);
+			}
+			taglist.setAdapter(adapter);
+			taglist.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long arg3)
+				{
+					// TODO: Selection and Search button
+					//Toast.makeText(getApplicationContext(), tags.get(position), Toast.LENGTH_LONG).show();
+					Intent myIntent = new Intent(PreviewActivity.this, BooruViewActivity.class);
+					myIntent.putExtra(BooruViewActivity.SEARCH_INTENT, tags.get(position));
+					startActivity(myIntent);
+				}
+			});
+		}
+		else
+		{
+			Toast.makeText(getApplicationContext(), "Can't get the view!", Toast.LENGTH_LONG).show();
+		}
+		
+		dlg.show();
 	}
 }

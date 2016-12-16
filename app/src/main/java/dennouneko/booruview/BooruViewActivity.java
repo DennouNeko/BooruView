@@ -18,6 +18,7 @@ import android.preference.*;
 public class BooruViewActivity extends Activity 
 {
 	public static final int REQUEST_SERVER = 1;
+	public static final String SEARCH_INTENT = "doSearch";
 	
 	private final Context context = this;
 	ViewFlipper flipper;
@@ -234,9 +235,28 @@ public class BooruViewActivity extends Activity
 			TextView t = (TextView)v.findViewById(R.id.panelLabel);
 			t.setMovementMethod(new ScrollingMovementMethod());
 		}
+		
+		Intent intent = getIntent();
+		if(intent.hasExtra(SEARCH_INTENT))
+		{
+			searchTags = intent.getStringExtra(SEARCH_INTENT);
+		}
 
 		updateViewContent();
     }
+
+	@Override
+	protected void onNewIntent(Intent intent)
+	{
+		super.onNewIntent(intent);
+		setIntent(intent);
+		if(intent.hasExtra(SEARCH_INTENT))
+		{
+			String search = intent.getStringExtra(SEARCH_INTENT);
+			Toast.makeText(getApplicationContext(), "Searching for " + search, Toast.LENGTH_LONG).show();
+			doSearch(search);
+		}
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
