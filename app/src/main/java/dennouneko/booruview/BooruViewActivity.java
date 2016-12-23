@@ -259,6 +259,28 @@ public class BooruViewActivity extends Activity
 	}
 
 	@Override
+	public void onBackPressed()
+	{
+		if(!searchTags.isEmpty())
+		{
+			doSearch("");
+		}
+		else
+		{
+			new AlertDialog.Builder(this)
+				.setTitle("Really?")
+				.setMessage("Are you sure you want to exit?")
+				.setNegativeButton("No", null)
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface arg0, int arg1) {
+						BooruViewActivity.super.onBackPressed();
+					}
+				})
+				.create().show();
+		}
+	}
+
+	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 	}
