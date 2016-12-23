@@ -175,6 +175,38 @@ public class PreviewActivity extends Activity
 		dlg.setContentView(R.layout.image_details);
 		dlg.setCancelable(true);
 		
+		StringBuilder brief = new StringBuilder();
+		TextView briefView = (TextView)dlg.findViewById(R.id.imageDetailsBrief);
+		
+		int w = 0, h = 0, id = 0, parent = 0;
+		double s = 0;
+		
+		try {
+			id = item.getInt("id");
+			if(brief.length() > 0) brief.append("\n");
+			brief.append(String.format("ID: %d", id));
+			
+			if(item.has("parent_id") && !item.isNull("parent_id"))
+			{
+				parent = item.getInt("parent_id");
+				if(brief.length() > 0) brief.append("\n");
+				brief.append(String.format("Parent: %d", parent));
+			}
+			
+			w = item.getInt("image_width");
+			h = item.getInt("image_height");
+			s = item.getDouble("file_size") / 1024;
+			
+			if(brief.length() > 0) brief.append("\n");
+			brief.append(String.format("[%dx%d] %.02fkB", w, h, s));
+		}
+		catch(JSONException e)
+		{
+			e.printStackTrace();
+		}
+		
+		briefView.setText(brief.toString());
+		
 		ListView taglist = (ListView)dlg.findViewById(R.id.imageDetailsTagList);
 		if(taglist != null) {
 			if(adapter == null)
