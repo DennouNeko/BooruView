@@ -49,7 +49,14 @@ public class BooruViewActivity extends Activity
 		if(cs.isEmpty()) {
 			//Toast.makeText(getApplicationContext(), "Please select server first.", Toast.LENGTH_LONG).show();
 			//return;
-			cs = "http://safebooru.donmai.us";
+			if(pref.getBoolean(ConfigActivity.PREF_MODE_SAFE, true))
+			{
+				cs = "http://safebooru.donmai.us";
+			}
+			else
+			{
+				cs = "http://danbooru.donmai.us";
+			}
 		}
 		final String curServer = cs;
 		

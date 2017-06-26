@@ -22,6 +22,15 @@
 			android:summaryOff="@string/pref_cachePreview_summOff"
 			android:defaultValue="false"
 			/>
+		<SwitchPreference
+			android:key="pref_modeSafe"
+			android:title="@string/pref_modeSafe"
+			android:switchTextOn="SFW"
+			android:switchTextOff="NSFW"
+			android:summaryOn="@string/pref_modeSafe_summOn"
+			android:summaryOff="@string/pref_modeSafe_summOff"
+			android:defaultValue="true"
+			/>
 		<Preference
 			android:key="pref_purgeBtn"
 			android:title="@string/pref_purgeBtn"
