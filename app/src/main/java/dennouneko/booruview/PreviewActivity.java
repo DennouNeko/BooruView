@@ -12,6 +12,7 @@ import android.database.*;
 import java.util.*;
 import android.widget.AdapterView.*;
 import android.util.*;
+import android.net.*;
 
 public class PreviewActivity extends Activity
 {
@@ -129,14 +130,11 @@ public class PreviewActivity extends Activity
 				break;
 			case R.id.menuCopyPage:
 				try {
-					StringBuilder url = new StringBuilder();
-					url.append(curServer);
-					url.append("/posts/");
-					url.append(item.getString("id"));
+					String url = getPageUrl();
 					ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-					ClipData clip = ClipData.newPlainText("url", url.toString());
+					ClipData clip = ClipData.newPlainText("url", url);
 					clipboard.setPrimaryClip(clip);
-					msg = String.format("Copied \"%s\" to clipboard.", url.toString());
+					msg = String.format("Copied \"%s\" to clipboard.", url);
 					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 				}
 				catch(Exception e) {
@@ -146,9 +144,7 @@ public class PreviewActivity extends Activity
 				break;
 			case R.id.menuCopyImage:
 				try {
-					StringBuilder url = new StringBuilder();
-					url.append(curServer);
-					url.append(item.getString("file_url"));
+					String url = getImageUrl();
 					ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 					ClipData clip = ClipData.newPlainText("url", url.toString());
 					clipboard.setPrimaryClip(clip);
@@ -160,10 +156,40 @@ public class PreviewActivity extends Activity
 					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 				}
 				break;
+			case R.id.menuOpenBrowser:
+				Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(getPageUrl()));
+				browser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(browser);
+				break;
 			default:
 				return super.onOptionsItemSelected(menuItem);
 		}
 		return true;
+	}
+	
+	public String getPageUrl()
+	{
+		StringBuilder url = new StringBuilder();
+		url.append(curServer);
+		url.append("/posts/");
+		try {
+			url.append(item.getString("id"));
+		}
+		catch(JSONException e)
+		{}
+		return url.toString();
+	}
+	
+	public String getImageUrl()
+	{
+		StringBuilder url = new StringBuilder();
+		url.append(curServer);
+		try {
+			url.append(item.getString("file_url"));
+		}
+		catch(JSONException e)
+		{}
+		return url.toString();
 	}
 	
 	private void showDetails()

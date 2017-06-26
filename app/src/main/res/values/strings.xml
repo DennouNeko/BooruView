@@ -9,6 +9,7 @@
 	<string name="menuCopyPage">Copy page URL</string>
 	<string name="menuCopyImage">Copy image URL</string>
 	<string name="menuDetails">Details...</string>
+	<string name="menuOpenBrowser">In browser...</string>
 	<string name="msgSaving">Saving %s...</string>
 	
 	<string name="alertTagSearch">Tags:</string>
@@ -27,8 +28,11 @@
 	<string name="pref_cacheInfo">Info</string>
 	<string name="pref_cacheSize">Size limit</string>
 	<string name="pref_cachePreview">Previews</string>
-	<string name="pref_cachePreview_summOn">Store all images in cache.</string>
-	<string name="pref_cachePreview_summOff">Store only the thumbnails.</string>
+	<string name="pref_cachePreview_summOn">Stores all images in cache.</string>
+	<string name="pref_cachePreview_summOff">Stores only the thumbnails.</string>
+	<string name="pref_modeSafe">Safe Mode</string>
+	<string name="pref_modeSafe_summOn">Hides NSFW images</string>
+	<string name="pref_modeSafe_summOff">Shows NSFW images</string>
 	<string name="pref_purgeBtn">Clear Cache</string>
 	
 </resources>
