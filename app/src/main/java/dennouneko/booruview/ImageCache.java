@@ -120,6 +120,10 @@ public class ImageCache
 		}
 	}
 	
+	public void tidyPartial() {
+		// TODO: delete all full images
+	}
+	
 	public void tidy() {
 		if(tidying) return;
 		

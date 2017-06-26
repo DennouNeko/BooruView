@@ -33,6 +33,10 @@ public class DataProvider
 		return cache.getUsedSpace(cacheDir);
 	}
 	
+	public void reduceCacheSize() {
+		cache.tidyPartial();
+	}
+	
 	public ArrayList<ImageCache.FileInfo> indexCacheFiles() {
 		ArrayList<ImageCache.FileInfo> ret = null;
 		try {
