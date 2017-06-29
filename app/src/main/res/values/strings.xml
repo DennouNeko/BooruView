@@ -31,8 +31,8 @@
 	<string name="pref_cachePreview_summOn">Stores all images in cache.</string>
 	<string name="pref_cachePreview_summOff">Stores only the thumbnails.</string>
 	<string name="pref_modeSafe">Safe Mode</string>
-	<string name="pref_modeSafe_summOn">Hides NSFW images</string>
-	<string name="pref_modeSafe_summOff">Shows NSFW images</string>
+	<string name="pref_modeSafe_summOn">Hides NSFW images.</string>
+	<string name="pref_modeSafe_summOff">Shows NSFW images.</string>
 	<string name="pref_purgeBtn">Clear Cache</string>
 	
 </resources>
