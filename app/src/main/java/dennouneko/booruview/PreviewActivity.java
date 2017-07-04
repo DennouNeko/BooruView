@@ -13,6 +13,7 @@ import java.util.*;
 import android.widget.AdapterView.*;
 import android.util.*;
 import android.net.*;
+import java.text.*;
 
 public class PreviewActivity extends Activity
 {
@@ -225,6 +226,13 @@ public class PreviewActivity extends Activity
 			
 			if(brief.length() > 0) brief.append("\n");
 			brief.append(String.format("[%dx%d] %.02fkB", w, h, s));
+			
+			String created_at = item.getString("created_at");
+			if(brief.length() > 0) brief.append("\n");
+			//brief.append(created_at).append("\n");
+			Date created_date = Utils.DateFromISO(created_at);
+			String created = created_date != null ? new SimpleDateFormat("yyyy-MM-dd hh:mm").format(created_date) : "null";
+			brief.append(created);
 		}
 		catch(JSONException e)
 		{

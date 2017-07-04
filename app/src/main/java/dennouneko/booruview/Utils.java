@@ -1,4 +1,7 @@
 package dennouneko.booruview;
+import java.sql.*;
+import java.util.Date;
+import java.text.*;
 
 public class Utils
 {
@@ -14,5 +17,19 @@ public class Utils
 		}
 
 		return String.format("%.2f%s", s1, suff[i]);
+	}
+	
+	public static Date DateFromISO(String str)
+	{
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		Date ret = null;
+		try
+		{
+			ret = df.parse(str);
+		}
+		catch(ParseException ex)
+		{
+		}
+		return ret;
 	}
 }
