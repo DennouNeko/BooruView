@@ -121,8 +121,10 @@ public class PreviewActivity extends Activity
 					{
 						dest += "/NSFW";
 					}
+					Uri srcUri = Uri.parse(fullImage);
+					String filename = srcUri.getLastPathSegment();
 					String msgSaving = getResources().getString(R.string.msgSaving);
-					msg = String.format(msgSaving, dest);// fullImage);
+					msg = String.format(msgSaving, filename, dest);
 					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 					DataProvider data = DataProvider.getInstance(getApplicationContext());
 					data.downloadFile(fullImage, dest);
