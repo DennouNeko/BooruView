@@ -127,10 +127,6 @@ public class DataProvider
 			}
 			Uri srcUri = Uri.parse(src);
 			String filename = srcUri.getLastPathSegment();
-			if(!pref.getBoolean(ConfigActivity.PREF_MODE_SAFE, true))
-			{
-				filename = "NSFW/" + filename;
-			}
 			DownloadManager.Request request = new DownloadManager.Request(srcUri);
 			request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
 			request.setAllowedOverRoaming(true);

@@ -114,11 +114,24 @@ public class PreviewActivity extends Activity
 		String msg;
 		switch(menuItem.getItemId()) {
 			case R.id.menuSave:
-				String msgSaving = getResources().getString(R.string.msgSaving);
-				msg = String.format(msgSaving, fullImage);
-				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-				DataProvider data = DataProvider.getInstance(getApplicationContext());
-				data.downloadFile(fullImage, null);
+				try {
+					String dest = Environment.DIRECTORY_DOWNLOADS;
+					String rating = item.getString("rating");
+					if(rating != "s")
+					{
+						dest += "/NSFW";
+					}
+					String msgSaving = getResources().getString(R.string.msgSaving);
+					msg = String.format(msgSaving, dest);// fullImage);
+					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+					DataProvider data = DataProvider.getInstance(getApplicationContext());
+					data.downloadFile(fullImage, dest);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+				}
 				break;
 			case R.id.menuDetails:
 				try {
