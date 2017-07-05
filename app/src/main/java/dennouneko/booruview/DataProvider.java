@@ -9,6 +9,7 @@ import android.content.*;
 import java.util.*;
 import android.app.*;
 import android.net.*;
+import android.preference.*;
 
 public class DataProvider
 {
@@ -118,6 +119,7 @@ public class DataProvider
 	}
 	
 	public void downloadFile(String src, String dst) {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mCtx);
 		try {
 			DownloadManager dm = (DownloadManager)mCtx.getSystemService(Context.DOWNLOAD_SERVICE);
 			if(dst == null) {
@@ -125,6 +127,10 @@ public class DataProvider
 			}
 			Uri srcUri = Uri.parse(src);
 			String filename = srcUri.getLastPathSegment();
+			if(!pref.getBoolean(ConfigActivity.PREF_MODE_SAFE, true))
+			{
+				filename = "NSFW/" + filename;
+			}
 			DownloadManager.Request request = new DownloadManager.Request(srcUri);
 			request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
 			request.setAllowedOverRoaming(true);
