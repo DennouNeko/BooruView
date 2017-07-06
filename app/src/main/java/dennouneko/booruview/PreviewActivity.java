@@ -117,10 +117,10 @@ public class PreviewActivity extends Activity
 				try {
 					String dest = Environment.DIRECTORY_DOWNLOADS;
 					String rating = item.getString("rating");
-					if(rating != "s")
+					/*if(!rating.equals("s"))
 					{
 						dest += "/NSFW";
-					}
+					}//*/
 					Uri srcUri = Uri.parse(fullImage);
 					String filename = srcUri.getLastPathSegment();
 					String msgSaving = getResources().getString(R.string.msgSaving);
@@ -248,6 +248,10 @@ public class PreviewActivity extends Activity
 			Date created_date = Utils.DateFromISO(created_at);
 			String created = created_date != null ? new SimpleDateFormat("yyyy-MM-dd hh:mm").format(created_date) : "null";
 			brief.append(created);
+			
+			String rating = item.getString("rating");
+			if(rating == null) rating = "?";
+			brief.append("\n").append("rating:" + rating);
 		}
 		catch(JSONException e)
 		{
