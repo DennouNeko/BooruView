@@ -227,6 +227,9 @@ public class PreviewActivity extends Activity
 			id = item.getInt("id");
 			if(brief.length() > 0) brief.append("\n");
 			brief.append(String.format("ID: %d", id));
+			String rating = item.getString("rating");
+			if(rating == null) rating = "?";
+			brief.append(", ").append(getRatingName(rating));
 			
 			if(item.has("parent_id") && !item.isNull("parent_id"))
 			{
@@ -248,10 +251,6 @@ public class PreviewActivity extends Activity
 			Date created_date = Utils.DateFromISO(created_at);
 			String created = created_date != null ? new SimpleDateFormat("yyyy-MM-dd hh:mm").format(created_date) : "null";
 			brief.append(created);
-			
-			String rating = item.getString("rating");
-			if(rating == null) rating = "?";
-			brief.append("\n").append("rating:" + rating);
 		}
 		catch(JSONException e)
 		{
@@ -285,5 +284,17 @@ public class PreviewActivity extends Activity
 		}
 		
 		dlg.show();
+	}
+	
+	public String getRatingName(String rating)
+	{
+		Resources res = getResources();
+		switch(rating.toLowerCase())
+		{
+			case "s": return res.getString(R.string.ratingS);
+			case "q": return res.getString(R.string.ratingQ);
+			case "e": return res.getString(R.string.ratingE);
+		}
+		return "unknown";
 	}
 }

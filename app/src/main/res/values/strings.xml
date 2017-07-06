@@ -11,6 +11,9 @@
 	<string name="menuDetails">Details...</string>
 	<string name="menuOpenBrowser">In browser...</string>
 	<string name="msgSaving">Saving %1$s in %2$s...</string>
+	<string name="ratingS">safe</string>
+	<string name="ratingQ">questionable</string>
+	<string name="ratingE">explicit</string>
 	
 	<string name="alertTagSearch">Tags:</string>
 	<string name="alertJumpPage">Jump to page:</string>
