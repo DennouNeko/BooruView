@@ -39,26 +39,30 @@ public class BooruAdapter extends BaseAdapter
 	}
 	
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		ImageView ret;
+		ImageView image;
+		View ret;
 		if(jobs[position] != null) {
 			jobs[position].cancel(true);
 			jobs[position] = null;
 		}
 		if(convertView == null) {
-			ret = new ImageView(mCtx);
+			//ret = new ImageView(mCtx);
+			ret=LayoutInflater.from(mCtx).inflate(R.layout.grid_image, null);
 			ret.setLayoutParams(new GridView.LayoutParams(gridSize, gridSize));
-			ret.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			image=(ImageView)ret.findViewById(R.id.grid_image);
+			image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			//ret.setPadding(8, 8, 8, 8);
 		}
 		else
 		{
-			ret = (ImageView)convertView;
+			ret = convertView;
+			image=(ImageView)ret.findViewById(R.id.grid_image);
 		}
 		try {
 			DataProvider data = DataProvider.getInstance(mCtx.getApplicationContext());
 			JSONObject item = (JSONObject)getItem(position);
 			if(item.has("preview_file_url")) {
-				jobs[position] = data.loadImage(curServer + item.getString("preview_file_url"), ret, true,
+				jobs[position] = data.loadImage(curServer + item.getString("preview_file_url"), image, true,
 				new DownloadJob.DataCallback() {
 					public void onDataReady(Object in) {
 						jobs[position] = null;
@@ -70,7 +74,7 @@ public class BooruAdapter extends BaseAdapter
 			}
 			else
 			{
-				ret.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.question));
+				image.setImageDrawable(mCtx.getResources().getDrawable(R.drawable.question));
 			}
 		}
 		catch(Exception e) {
