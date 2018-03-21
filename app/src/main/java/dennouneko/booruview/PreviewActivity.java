@@ -44,33 +44,37 @@ public class PreviewActivity extends Activity
 		try {
 			item = new JSONObject(intent.getStringExtra(ITEM_DETAILS));
 			fullImage = curServer + item.getString("file_url");
-			String tag_string_character = item.getString("tag_string_character");
-			String tag_string_copyright = item.getString("tag_string_copyright");
-			String tag_string_artist = item.getString("tag_string_artist");
-			String tag_string_general = item.getString("tag_string_general");
+			Tags tag_string_character = new Tags(item.getString("tag_string_character"));
+			Tags tag_string_copyright = new Tags(item.getString("tag_string_copyright"));
+			Tags tag_string_artist = new Tags(item.getString("tag_string_artist"));
+			Tags tag_string_general = new Tags(item.getString("tag_string_general"));
+			Tags tag_string_meta = new Tags(item.getString("tag_string_meta"));
 			StringBuilder tagbox = new StringBuilder();
 			if(!tag_string_character.isEmpty()) {
-				for(String s : tag_string_character.split(" "))
+				for(String s : tag_string_character.getList())
 					tags.add(s);
 				tagbox.append(tag_string_character);
 			}
 			if(!tag_string_copyright.isEmpty()) {
-				for(String s : tag_string_copyright.split(" "))
+				for(String s : tag_string_copyright.getList())
 					tags.add(s);
-				tag_string_copyright = "(" + tag_string_copyright + ")";
 				if(tagbox.length() > 0) tagbox.append("\n");
-				tagbox.append(tag_string_copyright);
+				tagbox.append("(" + tag_string_copyright.toString() + ")");
 			}
 			if(!tag_string_artist.isEmpty()) {
-				for(String s : tag_string_artist.split(" "))
+				for(String s : tag_string_artist.getList())
 					tags.add(s);
-				tag_string_artist = "by " + tag_string_artist;
 				if(tagbox.length() > 0) tagbox.append("\n");
-				tagbox.append(tag_string_artist);
+				tagbox.append("by " + tag_string_artist);
 			}
 			if(!tag_string_general.isEmpty())
 			{
-				for(String s : tag_string_general.split(" "))
+				for(String s : tag_string_general.getList())
+					tags.add(s);
+			}
+			if(!tag_string_meta.isEmpty())
+			{
+				for(String s : tag_string_meta.getList())
 					tags.add(s);
 			}
 			tagsView.setText(tagbox);
