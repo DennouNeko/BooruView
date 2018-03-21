@@ -15,7 +15,7 @@ import java.util.*;
 import android.content.res.*;
 import android.preference.*;
 
-public class BooruViewActivity extends Activity 
+public class BooruViewActivity extends Activity
 {
 	public static final int REQUEST_SERVER = 1;
 	public static final String SEARCH_INTENT = "doSearch";
